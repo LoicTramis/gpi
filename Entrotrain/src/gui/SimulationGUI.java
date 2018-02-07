@@ -19,7 +19,7 @@ public class SimulationGUI extends JFrame implements Runnable {
 	public static final int TIME_UNIT = 50;
 
 	public SimulationGUI() {
-		super("Train simulation");
+		super("EntroTrain");
 		getContentPane().add(dashboard);
 		setSize(1000, 300);
 		setVisible(true);
