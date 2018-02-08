@@ -20,10 +20,10 @@ import core.Train;
  */
 public class SimulationDashboard extends JPanel {
 	private static final long serialVersionUID = 1L;
-	private Line line;
-	private List<Train> trains = new ArrayList<Train>();
 	private static final int START_X = 20;
 	private static final int START_Y = 150;
+	private Line line;
+	private List<Train> trains = new ArrayList<Train>();
 
 	public SimulationDashboard() {
 		LineBuilder lineBuilder = new LineBuilder();
