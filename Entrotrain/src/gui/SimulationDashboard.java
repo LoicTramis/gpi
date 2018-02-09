@@ -71,7 +71,8 @@ public class SimulationDashboard extends JPanel {
 		
 		for (Train train : trains) {
 			g2.setFont(new Font("Dialog", Font.PLAIN, 20));
-			g2.drawString("Train", START_X + train.getPosition(), START_Y - 25);
+			g2.drawString("Train", START_X + train.getPosition(), START_Y - 35);
+			g2.drawString("Passengers : " + Integer.toString(train.getCurrentPassengers()), START_X + train.getPosition(), START_Y - 15);
 			g2.drawLine(START_X + train.getPosition(), START_Y - 5, START_X + train.getPosition(), START_Y + 5);
 		}
 	}
@@ -79,9 +80,11 @@ public class SimulationDashboard extends JPanel {
 	private void printStation(Graphics2D g2) {
 		g2.setColor(Color.GRAY);
 		g2.setStroke(new BasicStroke(10));
-			g2.setFont(new Font("Dialog", Font.PLAIN, 20));
-			g2.drawString("Station", START_X, START_Y);
-			g2.drawLine(START_X - 5, START_Y - 5, START_X + 5, START_Y + 5);
+		g2.setFont(new Font("Dialog", Font.PLAIN, 20));
+		g2.drawString("Station " + Integer.toString(station1.getIdStation()), START_X, START_Y + 45);
+		g2.drawString("Passengers : " + Integer.toString(station1.getPassenger()), START_X, START_Y + 65);
+		g2.drawString("Popularity : " + Integer.toString(station1.getPopularity()), START_X, START_Y + 85);
+		g2.drawOval(START_X - 5, START_Y - 5, 10, 10);
 	}
 	
 	public Line getLine() {

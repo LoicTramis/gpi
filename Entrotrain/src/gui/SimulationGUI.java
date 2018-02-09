@@ -1,12 +1,12 @@
 package gui;
 
 import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
 
 import javax.swing.JFrame;
 
 import core.Canton;
 import core.Line;
-import core.Station;
 import core.Train;
 
 /**
@@ -29,7 +29,8 @@ public class SimulationGUI extends JFrame implements Runnable {
 		setLayout(new BorderLayout());
 		getContentPane().add(dashboard, BorderLayout.CENTER);
 		getContentPane().add(buttonPanel, BorderLayout.SOUTH);
-		setSize(1000, 300);
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		setSize(1000, 400);
 		setVisible(true);
 	}
 
@@ -48,11 +49,9 @@ public class SimulationGUI extends JFrame implements Runnable {
 			if (currentTime % 12 == 0) {
 				Line line = dashboard.getLine();
 				Canton firstCanton = line.getCantons().get(0);
-				Station station1 = dashboard.getStation();
 				int currentPassenger = 0;
 				
 				if (firstCanton.isFree()) {
-					
 					Train newTrain = new Train(line, firstCanton, trainBasicSpeed, currentPassenger, MAX_PASSENGER);
 					dashboard.addTrain(newTrain);
 					newTrain.start();
@@ -70,5 +69,9 @@ public class SimulationGUI extends JFrame implements Runnable {
 			}
 			currentTime++;
 		}
+	}
+
+	public void closeAction(ActionEvent closeEvent, JFrame frame) {
+		System.out.println("Simulation closed");
 	}
 }

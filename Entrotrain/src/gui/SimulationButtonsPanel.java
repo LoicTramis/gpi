@@ -3,14 +3,19 @@ package gui;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.WindowEvent;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+/**
+ * 
+ * Panel that contains all the buttons
+ * 
+ * @author Lo&iuml;c Tramis
+ * @version 1.0
+ *
+ */
 public class SimulationButtonsPanel extends JPanel {
 
 	private static final long serialVersionUID = 1L;
@@ -20,6 +25,7 @@ public class SimulationButtonsPanel extends JPanel {
 	private JButton buttonRemoveTrain;
 
 	private JButton buttonStart;
+	private JButton buttonPause;
 	private JButton buttonSlowSpeed;
 	private JButton buttonFastSpeed;
 	private JButton buttonStop;
@@ -66,6 +72,13 @@ public class SimulationButtonsPanel extends JPanel {
 		buttonStart.setFont(new Font("Calibri", Font.PLAIN, 14));
 		buttonStart.setUI(new ButtonDesign());
 		
+		// Set the start button
+		buttonPause = new JButton("Pause");
+		buttonPause.setBackground(Color.GREEN);
+		buttonPause.setForeground(Color.WHITE);
+		buttonPause.setFont(new Font("Calibri", Font.PLAIN, 14));
+		buttonPause.setUI(new ButtonDesign());
+		
 		// Set the stop button
 		buttonSlowSpeed = new JButton("Slower");
 		buttonSlowSpeed.setBackground(Color.GREEN);
@@ -94,12 +107,84 @@ public class SimulationButtonsPanel extends JPanel {
 		buttonClose.setFont(new Font("Calibri", Font.PLAIN, 14));
 		buttonClose.setUI(new ButtonDesign());
 		
-		// Add event to the buttons
-		
-		
-		
 		// Add the button the to panel
-		add(buttonStop);
-		add(buttonClose);
+//		add(buttonStart);
+//		add(buttonPause);
+//		add(buttonStop);
+//		add(buttonClose);
 	}
+
+	public JButton getButtonAddStation() {
+		return buttonAddStation;
+	}
+
+	public void setButtonAddStation(JButton buttonAddStation) {
+		this.buttonAddStation = buttonAddStation;
+	}
+
+	public JButton getButtonRemoveStation() {
+		return buttonRemoveStation;
+	}
+
+	public void setButtonRemoveStation(JButton buttonRemoveStation) {
+		this.buttonRemoveStation = buttonRemoveStation;
+	}
+
+	public JButton getButtonAddTrain() {
+		return buttonAddTrain;
+	}
+
+	public void setButtonAddTrain(JButton buttonAddTrain) {
+		this.buttonAddTrain = buttonAddTrain;
+	}
+
+	public JButton getButtonRemoveTrain() {
+		return buttonRemoveTrain;
+	}
+
+	public void setButtonRemoveTrain(JButton buttonRemoveTrain) {
+		this.buttonRemoveTrain = buttonRemoveTrain;
+	}
+
+	public JButton getButtonStart() {
+		return buttonStart;
+	}
+
+	public void setButtonStart(JButton buttonStart) {
+		this.buttonStart = buttonStart;
+	}
+
+	public JButton getButtonSlowSpeed() {
+		return buttonSlowSpeed;
+	}
+
+	public void setButtonSlowSpeed(JButton buttonSlowSpeed) {
+		this.buttonSlowSpeed = buttonSlowSpeed;
+	}
+
+	public JButton getButtonFastSpeed() {
+		return buttonFastSpeed;
+	}
+
+	public void setButtonFastSpeed(JButton buttonFastSpeed) {
+		this.buttonFastSpeed = buttonFastSpeed;
+	}
+
+	public JButton getButtonStop() {
+		return buttonStop;
+	}
+
+	public void setButtonStop(JButton buttonStop) {
+		this.buttonStop = buttonStop;
+	}
+
+	public JButton getButtonClose() {
+		return buttonClose;
+	}
+
+	public void setButtonClose(JButton buttonClose) {
+		this.buttonClose = buttonClose;
+	}
+	
+	
 }
