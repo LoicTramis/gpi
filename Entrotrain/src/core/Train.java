@@ -9,7 +9,7 @@ import java.util.List;
 
 
 /**
- * @author tliu@u-cergy.fr
+ * @author cyril belmonte
  */
 public class Train extends Thread {
 	private volatile int position = 0;
@@ -19,6 +19,9 @@ public class Train extends Thread {
 	private int maxCapacity;
 	private Station currentStation = null ; //garage isnt a station
 	private List<Passenger> trainPassengers = new ArrayList<Passenger>();
+	private int maxPassenger;
+	private int currentPassengers;
+
 
 	/**
 	 * Distance per time unit.
@@ -26,12 +29,40 @@ public class Train extends Thread {
 	private int speed;
 	private boolean hasArrived = false;
 
-	public Train(Line line, Canton startCanton, int maxCapacity, int speed) {
+
+	
+	/**
+	 * @param line
+	 * @param startCanton
+	 * @param speed
+	 * @param currentPassenger
+	 * @param maxPassenger
+	 */
+	
+	public Train(Line line, Canton startCanton, int speed, int currentPassenger , int maxPassenger) {
 		this.line = line;
 		currentCanton = startCanton;
 		currentCanton.enter(this);
 		this.maxCapacity = maxCapacity;
 		this.speed = speed;
+		this.currentCanton = currentCanton;
+		this.maxPassenger = maxPassenger;
+	}
+
+	public int getMaxPassenger() {
+		return maxPassenger;
+	}
+
+	public void setMaxPassenger(int maxPassenger) {
+		this.maxPassenger = maxPassenger;
+	}
+
+	public int getCurrentPassengers() {
+		return currentPassengers;
+	}
+
+	public void setCurrentPassengers(int currentPassengers) {
+		this.currentPassengers = currentPassengers;
 	}
 
 	public int getPosition() {

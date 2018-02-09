@@ -1,5 +1,8 @@
 package gui;
 
+import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+
 import javax.swing.JFrame;
 
 import core.Canton;
@@ -11,17 +14,23 @@ import core.Train;
  */
 public class SimulationGUI extends JFrame implements Runnable {
 	private static final long serialVersionUID = 1L;
-	private static final int TRAIN_SPEED_VARIATION = 3;
+	private static final int TRAIN_SPEED_VARIATION = 0;
 	private static final int TRAIN_BASIC_SPEED = 2;
-	private SimulationDashboard dashboard = new SimulationDashboard();
-	private int currentTime = 0;
 	private static final int SIMULATION_DURATION = 1000;
+	private static final int MAX_PASSENGER = 200;
+	private int currentTime = 0;
+	private SimulationDashboard dashboard = new SimulationDashboard(); //JPanel
+	private SimulationButtonsPanel buttonPanel = new SimulationButtonsPanel();
+	
 	public static final int TIME_UNIT = 50;
 
 	public SimulationGUI() {
-		super("Train simulation");
-		getContentPane().add(dashboard);
-		setSize(1000, 300);
+		super("EntroTrain");
+		setLayout(new BorderLayout());
+		getContentPane().add(dashboard, BorderLayout.CENTER);
+		getContentPane().add(buttonPanel, BorderLayout.SOUTH);
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		setSize(1000, 400);
 		setVisible(true);
 	}
 
@@ -31,16 +40,19 @@ public class SimulationGUI extends JFrame implements Runnable {
 		simulationThread.start();
 	}
 
-	@Override
 	public void run() {
 		int trainBasicSpeed = TRAIN_BASIC_SPEED;
+		
 		while (currentTime <= SIMULATION_DURATION) {
 			System.out.println("Current time : " + currentTime);
+			
 			if (currentTime % 12 == 0) {
 				Line line = dashboard.getLine();
 				Canton firstCanton = line.getCantons().get(0);
+				int currentPassenger = 0;
+				
 				if (firstCanton.isFree()) {
-					Train newTrain = new Train(line, firstCanton, trainBasicSpeed);
+					Train newTrain = new Train(line, firstCanton, trainBasicSpeed, currentPassenger, MAX_PASSENGER);
 					dashboard.addTrain(newTrain);
 					newTrain.start();
 					System.out.println("New Train created " + newTrain.toString());
@@ -57,5 +69,9 @@ public class SimulationGUI extends JFrame implements Runnable {
 			}
 			currentTime++;
 		}
+	}
+
+	public void closeAction(ActionEvent closeEvent, JFrame frame) {
+		System.out.println("Simulation closed");
 	}
 }
