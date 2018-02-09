@@ -3,7 +3,7 @@ package core;
 import exception.TerminusException;
 
 /**
- * @author tliu@u-cergy.fr
+ * @author cyril belmonte
  */
 public class Train extends Thread {
 	private volatile int position = 0;
@@ -17,7 +17,15 @@ public class Train extends Thread {
 	 */
 	private int speed;
 	private boolean hasArrived = false;
-
+	
+	/**
+	 * @param line
+	 * @param startCanton
+	 * @param speed
+	 * @param currentPassenger
+	 * @param maxPassenger
+	 */
+	
 	public Train(Line line, Canton startCanton, int speed, int currentPassenger , int maxPassenger) {
 		this.line = line;
 		currentCanton = startCanton;
