@@ -21,7 +21,7 @@ public class SimulationButtonsPanel extends JPanel {
 
 	private JButton buttonStart;
 	private JButton buttonSlowSpeed;
-	private JButton buttonFast;
+	private JButton buttonFastSpeed;
 	private JButton buttonStop;
 	private JButton buttonClose;
 	
@@ -40,31 +40,45 @@ public class SimulationButtonsPanel extends JPanel {
 		
 		// Set the removeStation button
 		buttonRemoveStation = new JButton("Remove a station");
-		buttonRemoveStation.setBackground(Color.GREEN);
+		buttonRemoveStation.setBackground(Color.ORANGE);
 		buttonRemoveStation.setForeground(Color.WHITE);
 		buttonRemoveStation.setFont(new Font("Calibri", Font.PLAIN, 14));
 		buttonRemoveStation.setUI(new ButtonDesign());
 		
 		// Set the addTrain button
 		buttonAddTrain = new JButton("Add a train");
-		buttonAddTrain.setBackground(Color.GREEN);
+		buttonAddTrain.setBackground(Color.BLUE);
 		buttonAddTrain.setForeground(Color.WHITE);
 		buttonAddTrain.setFont(new Font("Calibri", Font.PLAIN, 14));
 		buttonAddTrain.setUI(new ButtonDesign());
 		
 		// Set the removeTrain button
 		buttonRemoveTrain = new JButton("Remove a train");
-		buttonRemoveTrain.setBackground(Color.GREEN);
+		buttonRemoveTrain.setBackground(Color.ORANGE);
 		buttonRemoveTrain.setForeground(Color.WHITE);
 		buttonRemoveTrain.setFont(new Font("Calibri", Font.PLAIN, 14));
 		buttonRemoveTrain.setUI(new ButtonDesign());
 		
+		// Set the start button
+		buttonStart = new JButton("Start");
+		buttonStart.setBackground(Color.GREEN);
+		buttonStart.setForeground(Color.WHITE);
+		buttonStart.setFont(new Font("Calibri", Font.PLAIN, 14));
+		buttonStart.setUI(new ButtonDesign());
+		
 		// Set the stop button
-		buttonStop = new JButton("Stop");
-		buttonStop.setBackground(Color.GREEN);
-		buttonStop.setForeground(Color.WHITE);
-		buttonStop.setFont(new Font("Calibri", Font.PLAIN, 14));
-		buttonStop.setUI(new ButtonDesign());
+		buttonSlowSpeed = new JButton("Slower");
+		buttonSlowSpeed.setBackground(Color.GREEN);
+		buttonSlowSpeed.setForeground(Color.WHITE);
+		buttonSlowSpeed.setFont(new Font("Calibri", Font.PLAIN, 14));
+		buttonSlowSpeed.setUI(new ButtonDesign());
+		
+		// Set the fastSpeed button
+		buttonFastSpeed = new JButton("Faster");
+		buttonFastSpeed.setBackground(Color.GREEN);
+		buttonFastSpeed.setForeground(Color.WHITE);
+		buttonFastSpeed.setFont(new Font("Calibri", Font.PLAIN, 14));
+		buttonFastSpeed.setUI(new ButtonDesign());
 		
 		// Set the stop button
 		buttonStop = new JButton("Stop");

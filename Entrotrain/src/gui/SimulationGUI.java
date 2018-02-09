@@ -6,6 +6,7 @@ import javax.swing.JFrame;
 
 import core.Canton;
 import core.Line;
+import core.Station;
 import core.Train;
 
 /**
@@ -16,6 +17,7 @@ public class SimulationGUI extends JFrame implements Runnable {
 	private static final int TRAIN_SPEED_VARIATION = 0;
 	private static final int TRAIN_BASIC_SPEED = 2;
 	private static final int SIMULATION_DURATION = 1000;
+	private static final int MAX_PASSENGER = 200;
 	private int currentTime = 0;
 	private SimulationDashboard dashboard = new SimulationDashboard(); //JPanel
 	private SimulationButtonsPanel buttonPanel = new SimulationButtonsPanel();
@@ -37,7 +39,6 @@ public class SimulationGUI extends JFrame implements Runnable {
 		simulationThread.start();
 	}
 
-	@Override
 	public void run() {
 		int trainBasicSpeed = TRAIN_BASIC_SPEED;
 		
@@ -47,9 +48,12 @@ public class SimulationGUI extends JFrame implements Runnable {
 			if (currentTime % 12 == 0) {
 				Line line = dashboard.getLine();
 				Canton firstCanton = line.getCantons().get(0);
+				Station station1 = dashboard.getStation();
+				int currentPassenger = 0;
 				
 				if (firstCanton.isFree()) {
-					Train newTrain = new Train(line, firstCanton, trainBasicSpeed);
+					
+					Train newTrain = new Train(line, firstCanton, trainBasicSpeed, currentPassenger, MAX_PASSENGER);
 					dashboard.addTrain(newTrain);
 					newTrain.start();
 					System.out.println("New Train created " + newTrain.toString());
