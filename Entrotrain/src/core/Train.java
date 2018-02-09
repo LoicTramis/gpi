@@ -106,7 +106,7 @@ public class Train extends Thread {
 	
 	
 	/***
-	 * How to deal with a passenger catching his train
+	 * How to deal with a passenger catching his train.
 	 */
 	public void trainBoarding() {
 		for(Iterator iter = this.currentStation.getPassengers().iterator(); iter.hasNext();){

@@ -1,5 +1,8 @@
 package core;
 
+/*
+ *Passager  
+ */
 public class Passenger {
 	private int age;
 	private String sexe;
