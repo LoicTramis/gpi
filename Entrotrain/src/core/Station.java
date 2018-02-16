@@ -29,7 +29,7 @@ public class Station {
 		this.idStation = idStation;
 		this.position = position;	
 	}
-
+	
 	public int getPassenger() {
 		return passenger;
 	}

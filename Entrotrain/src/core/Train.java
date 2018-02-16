@@ -15,13 +15,10 @@ public class Train extends Thread {
 	private volatile int position = 0;
 	private Line line;
 	private Canton currentCanton;
-	private int currentCapacity = 0;  //train leaves garage with 0 passengers
-	private int maxCapacity;
-	private Station currentStation = null ; //garage isnt a station
-	private List<Passenger> trainPassengers = new ArrayList<Passenger>();
+	private Station currentStation;
+	private int currentPassengers = 0;  //train leaves garage with 0 passengers
+	private ArrayList<Passenger> trainPassengers = new ArrayList<Passenger>();
 	private int maxPassenger;
-	private int currentPassengers;
-
 
 	/**
 	 * Distance per time unit.
@@ -31,71 +28,127 @@ public class Train extends Thread {
 
 
 	
-	/**
-	 * @param line
-	 * @param startCanton
-	 * @param speed
-	 * @param currentPassenger
-	 * @param maxPassenger
-	 */
-	
-	public Train(Line line, Canton startCanton, int speed, int currentPassenger , int maxPassenger) {
+	public Train(Line line, Canton startCanton , Station startStation , int speed , int currentPassengers , int maxPassenger , ArrayList<Passenger> passengers) {
 		this.line = line;
+		
 		currentCanton = startCanton;
 		currentCanton.enter(this);
-		this.maxCapacity = maxCapacity;
+		
+		currentStation = startStation;
+		
+		this.currentStation = startStation;
+		this.currentCanton = startCanton;
+		
 		this.speed = speed;
-		this.currentCanton = currentCanton;
-		this.maxPassenger = maxPassenger;
-	}
-
-	public int getMaxPassenger() {
-		return maxPassenger;
-	}
-
-	public void setMaxPassenger(int maxPassenger) {
-		this.maxPassenger = maxPassenger;
-	}
-
-	public int getCurrentPassengers() {
-		return currentPassengers;
-	}
-
-	public void setCurrentPassengers(int currentPassengers) {
+		
 		this.currentPassengers = currentPassengers;
+		this.maxPassenger = maxPassenger;
+		
+		this.trainPassengers = passengers;
 	}
+
+	
 
 	public int getPosition() {
 		return position;
 	}
 
-	public Canton getCurrentCanton() {
-		return currentCanton;
-	}
+
 
 	public void setPosition(int position) {
 		this.position = position;
 	}
 
+
+
+	public Line getLine() {
+		return line;
+	}
+
+
+
+	public void setLine(Line line) {
+		this.line = line;
+	}
+
+
+
+	public Canton getCurrentCanton() {
+		return currentCanton;
+	}
+
+
+
 	public void setCurrentCanton(Canton currentCanton) {
 		this.currentCanton = currentCanton;
 	}
-	
-	public int getCurrentCapacity() {
-		return currentCapacity;
-	}
-	
-	public void setCurrentCapacity(int currentCapacity) {
-		this.currentCapacity = currentCapacity;
+
+
+
+	public Station getCurrentStation() {
+		return currentStation;
 	}
 
-	public int getMaxCapacity() {
-		return maxCapacity;
+
+
+	public void setCurrentStation(Station currentStation) {
+		this.currentStation = currentStation;
 	}
 
-	public void setMaxCapacity(int maxCapacity) {
-		this.maxCapacity = maxCapacity;
+
+
+	public int getCurrentPassengers() {
+		return currentPassengers;
 	}
+
+
+
+	public void setCurrentPassengers(int currentPassengers) {
+		this.currentPassengers = currentPassengers;
+	}
+
+
+
+	public ArrayList<Passenger> getTrainPassengers() {
+		return trainPassengers;
+	}
+
+
+
+	public void setTrainPassengers(ArrayList<Passenger> trainPassengers) {
+		this.trainPassengers = trainPassengers;
+	}
+
+
+
+	public int getSpeed() {
+		return speed;
+	}
+
+
+
+	public void setSpeed(int speed) {
+		this.speed = speed;
+	}
+
+
+
+	public boolean isHasArrived() {
+		return hasArrived;
+	}
+
+
+
+	public void setHasArrived(boolean hasArrived) {
+		this.hasArrived = hasArrived;
+	}
+
+
+
+	public int getMaxPassenger() {
+		return maxPassenger;
+	}
+
 
 
 	@Override
@@ -124,32 +177,58 @@ public class Train extends Thread {
 	
 	/***
 	 * How to deal with the situation of a passenger arriving to his destination
+	 * and return the list of passenger who are leave the train
 	 */
-	public void trainUnboarding() {
+	
+	public ArrayList<Passenger> trainUnboarding(Station station) {
+		int index;
+		ArrayList<Passenger> ArrivalPassenger = new ArrayList<Passenger>();
+		for(index = 0; index<this.trainPassengers.size();index++) {
+			if(this.trainPassengers.get(index).getIdArrival() == station.getIdStation()){
+				ArrivalPassenger.add(this.trainPassengers.get(index));
+				this.trainPassengers.remove(index);
+			}
+		}
+		return ArrivalPassenger;
+	}
+	/*public void trainUnboarding() {
 		for(Iterator iter = trainPassengers.iterator(); iter.hasNext();){
 			Passenger p1 = (Passenger) iter.next();
-			if (p1.getStationOfArrival().equals(this.currentStation)) {
+			if (p1.getStationOfArrival().equals(this.currentStation1)) {
 				iter.remove(); //p1 got off the train and arrived at his destination
-				this.currentCapacity--;
+				this.currentPassengers--;
 			}
 		}
 	}
-	
+	*/
 	
 	/***
 	 * How to deal with a passenger catching his train.
 	 */
+	public void trainBoarding(Station station) {
+		if(this.maxPassenger == this.trainPassengers.size()) {
+			System.out.println("Train is full capacity :"+this.trainPassengers.size()+"\n");
+		}else {
+			int indexPassengers = 0;
+			while(this.maxPassenger <= this.currentPassengers) {
+				this.trainPassengers.add(station.getPassengers().get(indexPassengers));
+				indexPassengers++;
+			}
+		}
+	}
+	
+	/*
 	public void trainBoarding() {
-		for(Iterator iter = this.currentStation.getPassengers().iterator(); iter.hasNext();){
+		for(Iterator iter = this.currentStation1.getPassengers().iterator(); iter.hasNext();){
 			Passenger p1 = (Passenger) iter.next();
-			if (p1.getStationOfDeparture().equals(this.currentStation) && this.currentCapacity < this.maxCapacity) {
+			if (p1.getStationOfDeparture().equals(this.currentStation1) && this.currentPassengers < this.maxCapacity) {
 				iter.remove(); //p1 boards on the train and leaves the current station
-				this.currentStation.setPassenger(this.currentStation.getPassenger()-1); //Station loses 1 passenger since he boarded on the train
+				this.currentStation1.setPassenger(this.currentStation1.getPassenger()-1); //Station loses 1 passenger since he boarded on the train
 				this.trainPassengers.add(p1);
 			}
 		}	
 	}
-	
+	*/
 	
 	
 	@Override
