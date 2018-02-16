@@ -191,16 +191,6 @@ public class Train extends Thread {
 		}
 		return ArrivalPassenger;
 	}
-	/*public void trainUnboarding() {
-		for(Iterator iter = trainPassengers.iterator(); iter.hasNext();){
-			Passenger p1 = (Passenger) iter.next();
-			if (p1.getStationOfArrival().equals(this.currentStation1)) {
-				iter.remove(); //p1 got off the train and arrived at his destination
-				this.currentPassengers--;
-			}
-		}
-	}
-	*/
 	
 	/***
 	 * How to deal with a passenger catching his train.
@@ -216,19 +206,6 @@ public class Train extends Thread {
 			}
 		}
 	}
-	
-	/*
-	public void trainBoarding() {
-		for(Iterator iter = this.currentStation1.getPassengers().iterator(); iter.hasNext();){
-			Passenger p1 = (Passenger) iter.next();
-			if (p1.getStationOfDeparture().equals(this.currentStation1) && this.currentPassengers < this.maxCapacity) {
-				iter.remove(); //p1 boards on the train and leaves the current station
-				this.currentStation1.setPassenger(this.currentStation1.getPassenger()-1); //Station loses 1 passenger since he boarded on the train
-				this.trainPassengers.add(p1);
-			}
-		}	
-	}
-	*/
 	
 	
 	@Override
