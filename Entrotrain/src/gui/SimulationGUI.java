@@ -52,7 +52,7 @@ public class SimulationGUI extends JFrame implements Runnable {
 				int currentPassenger = 0;
 				
 				if (firstCanton.isFree()) {
-					Train newTrain = new Train(line, firstCanton, trainBasicSpeed, currentPassenger, MAX_PASSENGER);
+					Train newTrain = new Train(line, firstCanton, null, trainBasicSpeed, currentPassenger, MAX_PASSENGER, null);
 					dashboard.addTrain(newTrain);
 					newTrain.start();
 					System.out.println("New Train created " + newTrain.toString());

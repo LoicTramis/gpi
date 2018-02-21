@@ -13,6 +13,7 @@ public class Line {
 	private int usedLength = 0;
 
 	private List<Canton> cantons = new ArrayList<Canton>();
+	private List<Station> stations = new ArrayList<Station>();
 
 	public Line(int totalLenght) {
 		this.totalLenght = totalLenght;
@@ -53,6 +54,18 @@ public class Line {
 			}
 		}
 		throw new TerminusException();
+	}
+	
+	public Canton getCantonById(int id) throws exception.TerminusException {
+		for (Canton canton : cantons) {
+			while (canton.getId() == id) {
+				return canton;
+			}
+		}
+		throw new exception.TerminusException();
+	}
+	public List<Station> getStations() {
+		return stations;
 	}
 
 }
