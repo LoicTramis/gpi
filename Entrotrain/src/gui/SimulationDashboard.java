@@ -27,14 +27,15 @@ public class SimulationDashboard extends JPanel {
 	private Line line;
 	private List<Train> trains = new ArrayList<Train>();
 	private ArrayList<Passenger> passengers = new ArrayList<Passenger>();
-	private Station station1;
+
+	//private Station station1;
 
 	public SimulationDashboard() {
 		LineBuilder lineBuilder = new LineBuilder();
-		lineBuilder.buildLine(900, 300);
+		lineBuilder.buildLine(800, 100);
 		line = lineBuilder.getBuiltLine();
 		
-		station1 = new Station(200, 5, 1, START_X, passengers);
+		//station1 = new Station(200, 5, 1, START_X, passengers);
 	}
 
 	public void addTrain(Train train) {
@@ -57,8 +58,8 @@ public class SimulationDashboard extends JPanel {
 		
 		for (Canton canton : line.getCantons()) {
 			int startPoint = canton.getStartPoint();
-			g2.setFont(new Font("Dialog", Font.PLAIN, 25));
-			g2.drawString("Canton " + canton.getId(), startPoint + 100, START_Y + 30);
+			g2.setFont(new Font("Dialog", Font.PLAIN, 15));
+			g2.drawString("Canton " + canton.getId(), startPoint + 40, START_Y + 30);
 			g2.drawLine(START_X + startPoint, START_Y - 10, START_X + startPoint, START_Y + 10);
 			int endPoint = canton.getEndPoint();
 			g2.drawLine(START_X + endPoint, START_Y - 10, START_X + endPoint, START_Y + 10);
@@ -78,13 +79,17 @@ public class SimulationDashboard extends JPanel {
 	}
 
 	private void printStation(Graphics2D g2) {
-		g2.setColor(Color.GRAY);
-		g2.setStroke(new BasicStroke(10));
-		g2.setFont(new Font("Dialog", Font.PLAIN, 20));
-		g2.drawString("Station " + Integer.toString(station1.getIdStation()), START_X, START_Y + 45);
-		g2.drawString("Passengers : " + Integer.toString(station1.getPassenger()), START_X, START_Y + 65);
-		g2.drawString("Popularity : " + Integer.toString(station1.getPopularity()), START_X, START_Y + 85);
-		g2.drawOval(START_X - 5, START_Y - 5, 10, 10);
+		
+		for(Station station : line.getStations()) {
+			g2.setFont(new Font("Dialog", Font.BOLD, 12));
+			g2.setColor(Color.BLACK);
+			g2.drawString("" + station.getIdStation(), station.getPosition()+10, START_Y +45);
+			g2.drawString("Passengers : " + Integer.toString(station.getPassenger()), station.getPosition()+10, START_Y + 65);
+			g2.drawString("Popularity : " + Integer.toString(station.getPopularity()), station.getPosition()+10, START_Y + 85);
+			g2.setColor(Color.WHITE);
+			g2.drawOval(station.getPosition()+20, START_Y - 5, 10, 10);
+			
+		}
 	}
 	
 	public Line getLine() {
@@ -103,7 +108,7 @@ public class SimulationDashboard extends JPanel {
 		this.trains = trains;
 	}
 
-	public Station getStation() {
+	/*public Station getStation() {
 		return station1;
-	}
+	}*/
 }
