@@ -32,9 +32,9 @@ public class GenerateStation {
 		Station station;
 		
 		try{
-			configfile = new File("/home/bayo/git/gpi/Entrotrain/src/fichier/ListStation.txt");
+			configfile = new File("./src/fichier/ListStation.txt");
 		}catch( NullPointerException e){
-			configfile = new File("/home/bayo/git/gpi/Entrotrain/src/fichier/ListStation.txt");
+			configfile = new File("./src/fichier/ListStation.txt");
 		}
 		
 		try {
