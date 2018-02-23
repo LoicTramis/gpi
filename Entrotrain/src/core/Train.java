@@ -196,10 +196,10 @@ public class Train extends Thread {
 		if(this.maxPassenger == this.trainPassengers.size()) {
 			System.out.println("Train is full capacity :"+this.trainPassengers.size()+"\n");
 		}else {
-			int indexPassengers = 0;
-			while(this.maxPassenger >= this.currentPassengers && indexPassengers < station.getPassengers().size()) {
-				this.trainPassengers.add(station.getPassengers().get(indexPassengers));
-				indexPassengers++;
+			while(this.maxPassenger != this.currentPassengers && !station.getPassengers().isEmpty()) {
+				this.trainPassengers.add(station.getPassengers().get(0));
+				station.getPassengers().remove(0);
+				this.currentPassengers++;
 			}
 		}
 	}
