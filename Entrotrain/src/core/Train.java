@@ -27,7 +27,6 @@ public class Train extends Thread {
 	private boolean hasArrived = false;
 
 
-	
 	public Train(Line line, Canton startCanton , Station startStation , int speed , int currentPassengers , int maxPassenger , ArrayList<Passenger> passengers) {
 		this.line = line;
 		
@@ -180,7 +179,7 @@ public class Train extends Thread {
 	 * and return the list of passenger who are leave the train
 	 */
 	
-	public ArrayList<Passenger> trainUnboarding(Station station) {
+	/*public ArrayList<Passenger> trainUnboarding(Station station) {
 		int index;
 		ArrayList<Passenger> ArrivalPassenger = new ArrayList<Passenger>();
 		for(index = 0; index<this.trainPassengers.size();index++) {
@@ -190,7 +189,7 @@ public class Train extends Thread {
 			}
 		}
 		return ArrivalPassenger;
-	}
+	}*/
 	
 	/***
 	 * How to deal with a passenger catching his train.

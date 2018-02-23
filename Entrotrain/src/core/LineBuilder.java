@@ -13,6 +13,7 @@ public class LineBuilder {
 			line.addCanton(id, cantonLength);
 			id++;
 		}
+		line.getStations().addAll(GenerateStation.configfilestation(line));
 	}
 
 	public Line getBuiltLine() {
