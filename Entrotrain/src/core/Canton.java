@@ -39,7 +39,7 @@ public class Canton {
 			}
 		}
 
-		System.out.println("Canton changed successfully");
+//		System.out.println("Canton changed successfully");
 		Canton oldCanton = train.getCurrentCanton();
 		train.setCurrentCanton(this);
 		train.updatePosition();
@@ -52,7 +52,7 @@ public class Canton {
 	public synchronized void exit() {
 		occupyingTrain = null;
 		notify();
-		System.out.println("Canton freed !");
+//		System.out.println("Canton freed !");
 	}
 
 	public boolean isFree() {

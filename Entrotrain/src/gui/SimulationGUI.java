@@ -17,9 +17,9 @@ import core.Train;
 public class SimulationGUI extends JFrame implements Runnable {
 	private static final long serialVersionUID = 1L;
 	private static final int TRAIN_SPEED_VARIATION = 0;
-	private static final int TRAIN_BASIC_SPEED = 2;
+	private static final int TRAIN_BASIC_SPEED = 5;
 	private static final int SIMULATION_DURATION = 1000;
-	private static final int MAX_PASSENGER = 200;
+	private static final int MAX_PASSENGER = 5;
 	private int currentTime = 0;
 	private SimulationDashboard dashboard = new SimulationDashboard(); //JPanel
 	private SimulationButtonsPanel buttonPanel = new SimulationButtonsPanel();
@@ -44,28 +44,30 @@ public class SimulationGUI extends JFrame implements Runnable {
 
 	public void run() {
 		int trainBasicSpeed = TRAIN_BASIC_SPEED;
-		
+		int index = 0;
 		while (currentTime <= SIMULATION_DURATION) {
 			
 			if (currentTime % 12 == 0) {
 				Line line = dashboard.getLine();
 				Canton firstCanton = line.getCantons().get(0);
 				List<Station> stations = line.getStations();
+				System.out.println("Passager : " + stations.get(0).getPassengers().size());
 				int currentPassenger = 0;
 				
 				if (firstCanton.isFree()) {
 					Train newTrain = new Train(line, firstCanton, stations.get(0), trainBasicSpeed, currentPassenger, MAX_PASSENGER);
-					if (stations.get(0).getPassengers().size() != 0) {
-						newTrain.trainBoarding(stations.get(0));
-						System.out.println("Passengers montent");
-						System.out.println("Passager dans le train : " + newTrain.getTrainPassengers().size());
-					}
 					dashboard.addTrain(newTrain);
 					newTrain.start();
+					if (stations.get(0).getPassengers().size() != 0) {
+						newTrain.trainBoarding(stations.get(0));
+						System.out.println("Train :" + index);
+						System.out.println("Passengers montent");
+						System.out.println("Passager dans le train : " + newTrain.getTrainPassengers().size());
+						index++;
+					}
 					trainBasicSpeed += TRAIN_SPEED_VARIATION;
-					System.out.println("New Train created " + newTrain.toString());
 					System.out.println("Passager dans le train : " + newTrain.getCurrentPassengers());
-					System.out.println("Passager dans la station " + line.getStations().get(0).getPassengers().size());
+					System.out.println("Passager sur le quai " + line.getStations().get(0).getPassengers().size());
 				}
 
 			}

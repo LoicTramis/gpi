@@ -9,7 +9,6 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.imageio.ImageIO;
@@ -33,7 +32,6 @@ public class SimulationDashboard extends JPanel {
 	private BufferedImage trainImage = null;
 	private BufferedImage passengerImage = null;
 	private Line line;
-	private Passenger passenger;
 	private List<Train> trains = new ArrayList<Train>();
 	private ArrayList<Passenger> passengers = new ArrayList<Passenger>();
 
@@ -43,8 +41,7 @@ public class SimulationDashboard extends JPanel {
 		LineBuilder lineBuilder = new LineBuilder();
 		lineBuilder.buildLine(800, 100);
 		line = lineBuilder.getBuiltLine();
-		passenger = new Passenger(0, null, 0, 0, 0);
-		passengers = passenger.generatePassengers(10, 0, 2);
+		passengers = line.getStations().get(0).generatePassengers(50, 0, 2);
 		line.getStations().get(0).setPassengers(passengers);
 		
 		try {

@@ -1,6 +1,7 @@
 package core;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 /**@author Cyril Belmonte
  * @version 1.0
@@ -70,6 +71,26 @@ public class Station {
 		this.passengers = passengers;
 	}
 
+	public ArrayList<Passenger> generatePassengers(int numberPassenger,int idDeparture, int idTerminus) {
+		ArrayList<Passenger> passengers = new ArrayList<Passenger>();
+		for(int i=1;i<=numberPassenger;i++) {
+			Passenger pass = generatePassenger(idDeparture,idTerminus);
+			passengers.add(pass);
+		}
+		return passengers;
+	}	
 	
+	public Passenger generatePassenger(int idDeparture,int idTerminus){
+		Random rand = new Random();
+		int age = 7 + rand.nextInt(99-7);
+		int idStationArrival = (idDeparture+1)+rand.nextInt(idTerminus-idDeparture+1);
+		ArrayList<String> sexs = new ArrayList<String>();
+		sexs.add("m");
+		sexs.add("s");
+		int index = rand.nextInt(1-0);
+		String sex = sexs.get(index);
+		Passenger pass = new Passenger(age,sex,idStationArrival,idDeparture, 5);
+		return pass;
+	}
 
 }

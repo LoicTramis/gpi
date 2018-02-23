@@ -18,26 +18,7 @@ public class Passenger {
 		this.idDeparture = idDeparture;
 		this.satisfaction = satisfaction;
 	}	
-	public ArrayList<Passenger> generatePassengers(int numberPassenger,int idDeparture, int idTerminus) {
-		ArrayList<Passenger> passengers = new ArrayList<Passenger>();
-		for(int i=0;i<=numberPassenger;i++) {
-			Passenger pass = generatePassenger(idDeparture,idTerminus);
-			passengers.add(pass);
-		}
-		return passengers;
-	}	
-	public Passenger generatePassenger(int idDeparture,int idTerminus){
-		Random rand = new Random();
-		int age = 7 + rand.nextInt(99-7);
-		int idStationArrival = (idDeparture+1)+rand.nextInt(idTerminus-idDeparture+1);
-		ArrayList<String> sexs = new ArrayList<String>();
-		sexs.add("m");
-		sexs.add("s");
-		int index = rand.nextInt(1-0);
-		String sex = sexs.get(index);
-		Passenger pass = new Passenger(age,sex,idStationArrival,idDeparture, 5);
-		return pass;
-	}
+
 	
 	
 	public int getIdArrival() {
