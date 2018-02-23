@@ -54,17 +54,18 @@ public class SimulationGUI extends JFrame implements Runnable {
 				int currentPassenger = 0;
 				
 				if (firstCanton.isFree()) {
-					Train newTrain = new Train(line, firstCanton, null, trainBasicSpeed, currentPassenger, MAX_PASSENGER, null);
-					if (stations.get(0).getPassenger() != 0) {
+					Train newTrain = new Train(line, firstCanton, stations.get(0), trainBasicSpeed, currentPassenger, MAX_PASSENGER);
+					if (stations.get(0).getPassengers().size() != 0) {
 						newTrain.trainBoarding(stations.get(0));
 						System.out.println("Passengers montent");
+						System.out.println("Passager dans le train : " + newTrain.getTrainPassengers().size());
 					}
 					dashboard.addTrain(newTrain);
 					newTrain.start();
 					trainBasicSpeed += TRAIN_SPEED_VARIATION;
 					System.out.println("New Train created " + newTrain.toString());
 					System.out.println("Passager dans le train : " + newTrain.getCurrentPassengers());
-					System.out.println("Passager dans la station " + line.getStations().get(0).getPassenger());
+					System.out.println("Passager dans la station " + line.getStations().get(0).getPassengers().size());
 				}
 
 			}

@@ -27,7 +27,7 @@ public class Train extends Thread {
 	private boolean hasArrived = false;
 
 
-	public Train(Line line, Canton startCanton , Station startStation , int speed , int currentPassengers , int maxPassenger , ArrayList<Passenger> passengers) {
+	public Train(Line line, Canton startCanton , Station startStation , int speed , int currentPassengers , int maxPassenger) {
 		this.line = line;
 		
 		currentCanton = startCanton;
@@ -42,8 +42,6 @@ public class Train extends Thread {
 		
 		this.currentPassengers = currentPassengers;
 		this.maxPassenger = maxPassenger;
-		
-		this.trainPassengers = passengers;
 	}
 
 	
@@ -199,7 +197,7 @@ public class Train extends Thread {
 			System.out.println("Train is full capacity :"+this.trainPassengers.size()+"\n");
 		}else {
 			int indexPassengers = 0;
-			while(this.maxPassenger <= this.currentPassengers) {
+			while(this.maxPassenger >= this.currentPassengers && indexPassengers < station.getPassengers().size()) {
 				this.trainPassengers.add(station.getPassengers().get(indexPassengers));
 				indexPassengers++;
 			}
