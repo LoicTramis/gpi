@@ -2,11 +2,13 @@ package gui;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
+import java.util.List;
 
 import javax.swing.JFrame;
 
 import core.Canton;
 import core.Line;
+import core.Station;
 import core.Train;
 
 /**
@@ -30,7 +32,7 @@ public class SimulationGUI extends JFrame implements Runnable {
 		getContentPane().add(dashboard, BorderLayout.CENTER);
 		getContentPane().add(buttonPanel, BorderLayout.SOUTH);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		setSize(1000, 400);
+		setSize(1000, 700);
 		setVisible(true);
 	}
 
@@ -44,20 +46,25 @@ public class SimulationGUI extends JFrame implements Runnable {
 		int trainBasicSpeed = TRAIN_BASIC_SPEED;
 		
 		while (currentTime <= SIMULATION_DURATION) {
-			System.out.println("Current time : " + currentTime);
 			
 			if (currentTime % 12 == 0) {
 				Line line = dashboard.getLine();
 				Canton firstCanton = line.getCantons().get(0);
+				List<Station> stations = line.getStations();
 				int currentPassenger = 0;
 				
 				if (firstCanton.isFree()) {
-					Train newTrain = new Train(line, firstCanton, trainBasicSpeed, currentPassenger, MAX_PASSENGER);
+					Train newTrain = new Train(line, firstCanton, null, trainBasicSpeed, currentPassenger, MAX_PASSENGER, null);
+					if (stations.get(0).getPassenger() != 0) {
+						newTrain.trainBoarding(stations.get(0));
+						System.out.println("Passengers montent");
+					}
 					dashboard.addTrain(newTrain);
 					newTrain.start();
-					System.out.println("New Train created " + newTrain.toString());
 					trainBasicSpeed += TRAIN_SPEED_VARIATION;
-					System.out.println(trainBasicSpeed);
+					System.out.println("New Train created " + newTrain.toString());
+					System.out.println("Passager dans le train : " + newTrain.getCurrentPassengers());
+					System.out.println("Passager dans la station " + line.getStations().get(0).getPassenger());
 				}
 
 			}
