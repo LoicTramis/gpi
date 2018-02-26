@@ -109,7 +109,7 @@ public class SimulationDashboard extends JPanel {
 		int passengerStartX = START_X;
 		int passengerStartY = START_Y + 20;
 		
-		for (int index = 0; index <= passengers.size(); index++) {
+		for (int index = 0; index < passengers.size(); index++) {
 			if (index % 5 == 0) {
 				passengerStartX = START_X;
 				passengerStartY += 20;
