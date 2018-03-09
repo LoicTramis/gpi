@@ -2,6 +2,7 @@ package gui;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.List;
 
 import javax.swing.JFrame;
@@ -23,14 +24,20 @@ public class SimulationGUI extends JFrame implements Runnable {
 	private int currentTime = 0;
 	private SimulationDashboard dashboard = new SimulationDashboard(); //JPanel
 	private SimulationButtonsPanel buttonPanel = new SimulationButtonsPanel();
+	private boolean stop = true;
+	private SimulationGUI instance = this;
 	
 	public static final int TIME_UNIT = 50;
+	
 
 	public SimulationGUI() {
 		super("EntroTrain");
 		setLayout(new BorderLayout());
 		getContentPane().add(dashboard, BorderLayout.CENTER);
 		getContentPane().add(buttonPanel, BorderLayout.SOUTH);
+		
+		buttonPanel.getButtonStart().addActionListener(new StartPauseAction());
+		
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setSize(1000, 700);
 		setVisible(true);
@@ -83,5 +90,27 @@ public class SimulationGUI extends JFrame implements Runnable {
 
 	public void closeAction(ActionEvent closeEvent, JFrame frame) {
 		System.out.println("Simulation closed");
+	}
+	
+	private class StartPauseAction implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			if (!stop) {
+				stop = true;
+				buttonPanel.getButtonStart().setText("Start");
+				Thread trainThread = new Thread(instance);
+				try {
+					trainThread.wait();
+				} catch (InterruptedException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			} else {
+				stop = false;
+				buttonPanel.getButtonStart().setText("Pause");
+				Thread trainThread = new Thread(instance);
+				trainThread.start();
+			}
+		}
 	}
 }

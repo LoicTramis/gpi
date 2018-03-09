@@ -108,10 +108,12 @@ public class SimulationButtonsPanel extends JPanel {
 		buttonClose.setUI(new ButtonDesign());
 		
 		// Add the button the to panel
-//		add(buttonStart);
-//		add(buttonPause);
-//		add(buttonStop);
-//		add(buttonClose);
+		add(buttonStart);
+		add(buttonPause);
+		add(buttonSlowSpeed);
+		add(buttonFastSpeed);
+		add(buttonStop);
+		add(buttonClose);
 	}
 
 	public JButton getButtonAddStation() {
