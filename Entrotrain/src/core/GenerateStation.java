@@ -27,8 +27,8 @@ public class GenerateStation {
 		 int numberPassenger = 0;
 		 int popularity = 0;
 		 int position;
-		 String idStation;
-		 ArrayList<Passenger> passengers = null;
+		 int idStation;
+		 ArrayList<Passenger> passengers = new ArrayList<Passenger>();
 		Station station;
 		
 		try{
@@ -42,7 +42,8 @@ public class GenerateStation {
 			try {
 				while((line = filereader.readLine()) != null){
 					linesplitted = line.split("=");
-					idStation = linesplitted[0];
+					String string = linesplitted[1];
+					idStation = Integer.parseInt(string);
 					System.out.println(idStation);	
 					System.out.println(linesplitted[1]);
 					try {
