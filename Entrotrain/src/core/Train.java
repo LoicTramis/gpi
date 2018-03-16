@@ -220,9 +220,10 @@ public class Train extends Thread {
 	
 	public boolean hasEnteredStation (Train train, List<Station> stations){
 		for(int index = 0; index<stations.size();index++) {
-			if(train.position == stations.get(index).getPosition())
+			if(train.position == stations.get(index).getPosition()){
 				train.setCurrentStation(stations.get(index));
 				return true;
+			}
 		}
 		return false;
 	}
