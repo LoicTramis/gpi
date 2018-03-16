@@ -37,6 +37,7 @@ public class SimulationGUI extends JFrame implements Runnable {
 		getContentPane().add(buttonPanel, BorderLayout.SOUTH);
 		
 		buttonPanel.getButtonStart().addActionListener(new StartPauseAction());
+		buttonPanel.getButtonClose().addActionListener(new CloseAction());
 		
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setSize(1000, 700);
@@ -110,6 +111,12 @@ public class SimulationGUI extends JFrame implements Runnable {
 				Thread trainThread = new Thread(instance);
 				trainThread.start();
 			}
+		}
+	}
+	
+	private class CloseAction implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			setDefaultCloseOperation(EXIT_ON_CLOSE);
 		}
 	}
 }
