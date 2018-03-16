@@ -41,7 +41,7 @@ public class SimulationDashboard extends JPanel {
 		LineBuilder lineBuilder = new LineBuilder();
 		lineBuilder.buildLine(800, 100);
 		line = lineBuilder.getBuiltLine();
-		passengers = line.getStations().get(0).generatePassengers(50, 0, 2);
+		passengers = line.getStations().get(0).generatePassengers(50, 1, 2);
 		line.getStations().get(0).setPassengers(passengers);
 		
 		try {

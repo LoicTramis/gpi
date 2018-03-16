@@ -6,6 +6,7 @@ import gui.SimulationGUI;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Random;
 
 
 /**
@@ -16,6 +17,7 @@ public class Train extends Thread {
 	private Line line;
 	private Canton currentCanton;
 	private Station currentStation;
+	private Incident incident = null;
 	private int currentPassengers = 0;  //train leaves garage with 0 passengers
 	private ArrayList<Passenger> trainPassengers = new ArrayList<Passenger>();
 	private int maxPassenger;
@@ -145,6 +147,16 @@ public class Train extends Thread {
 	public int getMaxPassenger() {
 		return maxPassenger;
 	}
+	
+	public void setIncident(Incident incident){
+		this.incident=incident;
+	}
+	
+	public void generateIncident(Train train){
+		Random x = new Random();
+		Incident train_problem = new Incident(x.nextInt(10));
+		train.setIncident(train_problem);
+	}
 
 
 
@@ -166,6 +178,10 @@ public class Train extends Thread {
 				}
 			} else {
 				updatePosition();
+				if (hasEnteredStation(this,line.getStations())) {
+					trainUnboarding();
+					trainBoarding(this.currentStation);
+				}
 			}
 		}
 		currentCanton.exit();
@@ -177,24 +193,22 @@ public class Train extends Thread {
 	 * and return the list of passenger who are leave the train
 	 */
 	
-	/*public ArrayList<Passenger> trainUnboarding(Station station) {
+	public void trainUnboarding() {
 		int index;
-		ArrayList<Passenger> ArrivalPassenger = new ArrayList<Passenger>();
 		for(index = 0; index<this.trainPassengers.size();index++) {
-			if(this.trainPassengers.get(index).getIdArrival() == station.getIdStation()){
-				ArrivalPassenger.add(this.trainPassengers.get(index));
+			if(this.trainPassengers.get(index).getIdArrival()==this.currentStation.getIdStation()){
+				this.currentStation.getPassengers().add(this.trainPassengers.get(index));
 				this.trainPassengers.remove(index);
 			}
 		}
-		return ArrivalPassenger;
-	}*/
+	}
 	
 	/***
 	 * How to deal with a passenger catching his train.
 	 */
 	public void trainBoarding(Station station) {
 		if(this.maxPassenger == this.trainPassengers.size()) {
-			System.out.println("Train is full capacity :"+this.trainPassengers.size()+"\n");
+			//System.out.println("Train is full capacity :"+this.trainPassengers.size()+"\n");
 		}else {
 			while(this.maxPassenger != this.currentPassengers && !station.getPassengers().isEmpty()) {
 				this.trainPassengers.add(station.getPassengers().get(0));
@@ -202,6 +216,15 @@ public class Train extends Thread {
 				this.currentPassengers++;
 			}
 		}
+	}
+	
+	public boolean hasEnteredStation (Train train, List<Station> stations){
+		for(int index = 0; index<stations.size();index++) {
+			if(train.position == stations.get(index).getPosition())
+				train.setCurrentStation(stations.get(index));
+				return true;
+		}
+		return false;
 	}
 	
 	

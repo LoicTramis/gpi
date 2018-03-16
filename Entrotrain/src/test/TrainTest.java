@@ -29,8 +29,8 @@ public class TrainTest {
 		ArrayList<Passenger> arraypassenger2 = new ArrayList<Passenger>();
 		for(int index = 0; index < 10 ; index++)
 			arraypassenger2.add(passtest);
-		Station station1 = new Station(20,0,null,0,arraypassenger);
-		Station station2 = new Station(10,0,null,0,arraypassenger2);
+		Station station1 = new Station(20,0,0,0,arraypassenger);
+		Station station2 = new Station(10,0,0,0,arraypassenger2);
 		Train traintest1;
 		Canton canton1 = new Canton(0, 0, 0);
 		Canton canton2 = new Canton(0, 0, 0);

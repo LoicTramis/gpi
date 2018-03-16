@@ -93,7 +93,6 @@ public class SimulationGUI extends JFrame implements Runnable {
 	}
 	
 	private class StartPauseAction implements ActionListener {
-		@Override
 		public void actionPerformed(ActionEvent e) {
 			if (!stop) {
 				stop = true;

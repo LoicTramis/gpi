@@ -13,8 +13,8 @@ public class Station {
 	private int passenger;
 	private int popularity;
 	private int position;
-	private String idStation;
-	private ArrayList<Passenger> passengers;
+	private int idStation;
+	private ArrayList<Passenger> passengers =new ArrayList<Passenger>();
 	
 	/**
 	 * @param numberPassenger
@@ -23,11 +23,11 @@ public class Station {
 	 * @param id
 	 * @param passenger
 	 */
-	public Station(int numberPassenger, int popularity, String idStation, int position, ArrayList<Passenger> passengers) {
+	public Station(int numberPassenger, int popularity, int idStation2, int position, ArrayList<Passenger> passengers) {
 		this.passenger = numberPassenger;
 		this.passengers = passengers;
 		this.popularity = popularity;
-		this.idStation = idStation;
+		this.idStation = idStation2;
 		this.position = position;	
 	}
 	
@@ -55,11 +55,11 @@ public class Station {
 		this.position = position;
 	}
 
-	public String getIdStation() {
+	public int getIdStation() {
 		return idStation;
 	}
 
-	public void setIdStation(String idStation) {
+	public void setIdStation(int idStation) {
 		this.idStation = idStation;
 	}
 

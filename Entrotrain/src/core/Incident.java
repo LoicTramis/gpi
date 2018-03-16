@@ -6,6 +6,7 @@ package core;
 
 public class Incident {
 	private int degree_of_incident;
+	private boolean isSolved = false;
 	
 	public Incident(int degree_of_incident) {
 		this.degree_of_incident = degree_of_incident;
@@ -26,7 +27,7 @@ public class Incident {
 			time = 4;
 		}else {
 			time = 0;
-		}
+		} 
 		return time;
 	}
 	
@@ -49,4 +50,38 @@ public class Incident {
 		}
 		return note;
 	}
+
+
+
+
+	public boolean getIsSolved(){
+		return this.isSolved;
+	}
 }
+
+
+
+
+
+
+
+
+
+	/*
+	 *
+	 * A incorporer dans la méthode run() du GUI 
+	
+		Random x = new Random();
+		if (x.nextInt(5) == 4) gene; //RAPPEL : nextInt retoure une valeur comprise dans [0,5[ donc ici 1 chance sur 5 qu'un incident se produise  
+		
+		while (train_problem.getIsSolved() != true && train.getIncident().getIncidentTime() > 0 ){
+			if (train.getSpeed() != 0) {
+				originalSpeed = train.getSpeed();
+				train.setSpeed(0);
+			}
+		}
+		train.setSpeed(originalSpeed);
+
+	/*
+	 *
+	*/
