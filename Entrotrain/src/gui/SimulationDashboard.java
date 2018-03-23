@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -26,8 +27,8 @@ import core.Train;
  */
 public class SimulationDashboard extends JPanel {
 	private static final long serialVersionUID = 1L;
-	private static final int START_X = 50;
-	private static final int START_Y = 150;
+	private static final int START_X = 50;//65
+	private static final int START_Y = 150;//300
 	private BufferedImage stationImage = null;
 	private BufferedImage trainImage = null;
 	private BufferedImage passengerImage = null;
@@ -35,11 +36,16 @@ public class SimulationDashboard extends JPanel {
 	private List<Train> trains = new ArrayList<Train>();
 	private ArrayList<Passenger> passengers = new ArrayList<Passenger>();
 
+	ArrayList<Train> alltrains = new ArrayList<Train>();
+	private List<Station> stations = new ArrayList<Station>();
+	private LineBuilder lineBuilder;
+	private int cpt=1;
 	//private Station station1;
 
 	public SimulationDashboard() {
 		LineBuilder lineBuilder = new LineBuilder();
 		lineBuilder.buildLine(800, 100);
+		//recupere les Station fu fichier ainsi que l'enssemble des cantons
 		line = lineBuilder.getBuiltLine();
 		passengers = line.getStations().get(0).generatePassengers(50, 1, 2);
 		line.getStations().get(0).setPassengers(passengers);
@@ -54,6 +60,10 @@ public class SimulationDashboard extends JPanel {
 
 	public void addTrain(Train train) {
 		trains.add(train);
+	}
+	
+	public void addStation(Station station){
+		stations.add(station);
 	}
 
 	@Override

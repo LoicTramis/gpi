@@ -3,6 +3,8 @@ package core;
 import java.util.ArrayList;
 import java.util.Random;
 
+import core.Train;
+
 /**@author Cyril Belmonte
  * @version 1.0
  * 
@@ -17,18 +19,34 @@ public class Station {
 	private ArrayList<Passenger> passengers =new ArrayList<Passenger>();
 	
 	/**
-	 * @param numberPassenger
-	 * @param popularity
-	 * @param position
-	 * @param id
-	 * @param passenger
+	 * @author Karim
+	 *
 	 */
+	private String id;//nom
+	private ArrayList<Train> trainsarriving = new ArrayList<Train>();
+	private int linelevel;//niveau pour Gui
+	private int cantonid;
+	
+	/**
+	 * @author Karim
+	 *
+	 */
+	public Station(String id, int position, int linelevel){
+		this.id=id;
+		this.position=position;
+		this.linelevel=linelevel;
+	}
+	
 	public Station(int numberPassenger, int popularity, int idStation2, int position, ArrayList<Passenger> passengers) {
 		this.passenger = numberPassenger;
 		this.passengers = passengers;
 		this.popularity = popularity;
 		this.idStation = idStation2;
-		this.position = position;	
+		this.position = position;
+	}
+	
+	public void addTrainArriving(Train train){
+		this.trainsarriving.add(train);
 	}
 	
 	public int getPassenger() {
@@ -62,11 +80,11 @@ public class Station {
 	public void setIdStation(int idStation) {
 		this.idStation = idStation;
 	}
-
+	
 	public ArrayList<Passenger> getPassengers() {
 		return passengers;
 	}
-
+	
 	public void setPassengers(ArrayList<Passenger> passengers) {
 		this.passengers = passengers;
 	}
@@ -91,6 +109,50 @@ public class Station {
 		String sex = sexs.get(index);
 		Passenger pass = new Passenger(age,sex,idStationArrival,idDeparture, 5);
 		return pass;
+	}
+	
+	/**
+	 * @author Karim
+	 *
+	 */
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+	public int getLinelevel() {
+		return linelevel;
+	}
+
+	public void setLinelevel(int linelevel) {
+		this.linelevel = linelevel;
+	}
+	
+	//Array de Train avec tous les trains présents dans une gare
+	public ArrayList<Train> getTrainsarriving() {
+		return trainsarriving;
+	}
+
+	public void setTrainsarriving(ArrayList<Train> trainsarriving) {
+		this.trainsarriving = trainsarriving;
+	}
+	
+	//Array des distances trains/station
+	public ArrayList<Integer> getTrainsArrivingDistance(){
+		ArrayList<Integer> trainarrivingdistance = new ArrayList<Integer>();
+		for(Train train : this.getTrainsarriving())
+			trainarrivingdistance.add(train.DistanceFromStation(this));
+		return trainarrivingdistance;
+	}
+
+	public int getCantonid() {
+		return cantonid;
+	}
+
+	public void setCantonid(int cantonid) {
+		this.cantonid = cantonid;
 	}
 
 }

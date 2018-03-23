@@ -1,5 +1,36 @@
-Cergy le Haut=1
-Cergy Saint-Christophe=3
-Cergy Préfecture=5
-Neuville Université=7
-Défense=9
+Paris-Saint-Lazare=1:lvl=0
+Pont-Cardinet=3:lvl=0
+Clichy-Levallois=5:lvl=0
+Asnieres-sur-Seine=7:lvl=0
+Becon-les-Bruyeres=9:lvl=0
+Les Vallees=11:lvl=0
+La Garenne-Colombes=13:lvl=0
+Nanterre-Universite=15:lvl=0
+Houilles=17:lvl=0
+Sartrouville=19:lvl=0
+Maisons-Laffitte=21:lvl=0
+Acheres-Ville=23:lvl=0
+Conflans-Fin-d'Oise=25:lvl=0
+Neuville-Universite=27:lvl=0
+Cergy-Prefecture=29:lvl=0
+Cergy-Saint-Christophe=31:lvl=0
+Cergy-le-Haut=33:lvl=0
+Courbevoie=101:lvl=1
+La Defense=103:lvl=1
+Putaux=105:lvl=1
+Suresnes-Mont-Valerien=107:lvl=1
+Le Val-d'Or=109:lvl=1
+Saint-Cloud=111:lvl=1
+Garches=113:lvl=1
+Vaucresson=115:lvl=1
+La Celle-Saint-Cloud=117:lvl=1
+Bougival=119:lvl=1
+Louveciennes=121:lvl=1
+Marly-Le-Roi=123:lvl=1
+L'Etang-la-Ville=125:lvl=1
+Saint-Nom-la-Breteche=127:lvl=1
+Sevres-Ville-d'Avray=201:lvl=2
+Chaville-Rive-Droite=203:lvl=2
+Viroflay-Rive-Droite=205:lvl=2
+Montreuil=207:lvl=2
+Versailles-Rive-Droite=209:lvl=2

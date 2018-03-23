@@ -8,6 +8,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
+import core.Canton;
+import core.Line;
+import core.Station;
+
 
 /**
  * @author cyril belmonte
@@ -21,14 +25,59 @@ public class Train extends Thread {
 	private int currentPassengers = 0;  //train leaves garage with 0 passengers
 	private ArrayList<Passenger> trainPassengers = new ArrayList<Passenger>();
 	private int maxPassenger;
+	
+	/**
+	 * @author Karim
+	 *
+	 */
+	private String Id;
+	private ArrayList<Station> stationsdeserved = new ArrayList<Station>();
+	private ArrayList<Integer> forks = new ArrayList<Integer>();
+	private boolean stop;
+	//temps pour la simulation de s'executer 10nutié et 1 arret a une station
+	private long exec10units=0;
+	private int SLEEP_TIME = 2000;
+	private long pause=0;
 
 	/**
 	 * Distance per time unit.
 	 */
 	private int speed;
+	private int initialspeed;
 	private boolean hasArrived = false;
 
-
+	/**
+	 * @author Karim
+	 *
+	 */
+	public Train(Line line, Canton startCanton, int speed, ArrayList<Station> stationsdeserved, String type, ArrayList<Integer> forks, int o) {
+		this.line = line;
+		currentCanton = startCanton;
+		currentCanton.enter(this);
+		this.speed = speed;
+		this.stationsdeserved.addAll(stationsdeserved);
+		this.Id=type;
+		this.forks.addAll(forks);
+		this.initialspeed=speed;
+		this.stop=false;
+		LinkTrainStations();
+	}
+	
+	/**
+	 * @author Karim
+	 *
+	 */
+	public Train(Line line, Canton startCanton, int speed, ArrayList<Station> stationsdeserved, String type, ArrayList<Integer> forks) {
+		this.line = line;
+		currentCanton = startCanton;
+		this.speed = speed;
+		this.stationsdeserved.addAll(stationsdeserved);
+		this.Id=type;
+		this.forks.addAll(forks);
+		this.initialspeed=speed;
+		this.stop=false;
+	}
+	
 	public Train(Line line, Canton startCanton , Station startStation , int speed , int currentPassengers , int maxPassenger) {
 		this.line = line;
 		
@@ -44,10 +93,10 @@ public class Train extends Thread {
 		
 		this.currentPassengers = currentPassengers;
 		this.maxPassenger = maxPassenger;
+		this.stop = false;
+		
 	}
-
 	
-
 	public int getPosition() {
 		return position;
 	}
@@ -142,8 +191,6 @@ public class Train extends Thread {
 		this.hasArrived = hasArrived;
 	}
 
-
-
 	public int getMaxPassenger() {
 		return maxPassenger;
 	}
@@ -158,11 +205,21 @@ public class Train extends Thread {
 		train.setIncident(train_problem);
 	}
 
-
-
 	@Override
-	public void run() {
+	/*public void run() {
 		while (!hasArrived) {
+			if(stop){
+				try {
+					//System.out.println("repartisNNNNNNN\n");
+					wait();
+					//System.out.println("repartis\n");
+					
+				} catch (InterruptedException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				this.stop=false;
+			}
 			try {
 				sleep(SimulationGUI.TIME_UNIT);
 			} catch (InterruptedException e) {
@@ -184,6 +241,50 @@ public class Train extends Thread {
 				}
 			}
 		}
+		currentCanton.exit();
+	}*/
+	
+	//Utiliser cette methode run pour que le boutton stop fonctionne correctement
+	public synchronized void run() {
+		while (!hasArrived) {
+			if(stop){
+				try {
+					//System.out.println("repartisNNNNNNN\n");
+					wait();
+					//System.out.println("repartis\n");
+					
+				} catch (InterruptedException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				this.stop=false;
+			}
+			try {
+				sleep(SimulationGUI.TIME_UNIT);
+			} catch (InterruptedException e) {
+				System.err.println(e.getMessage());
+			}
+			if (position + speed >= currentCanton.getEndPoint()) {
+				try {
+					Canton nextCanton = line.getCantonByPosition(position + speed);
+					nextCanton.enter(this);
+				} catch (TerminusException e) {
+					hasArrived = true;
+					position = line.getTotalLenght();
+				}
+			} else {
+		
+				updatePosition();
+				
+			}
+			
+		/*	if(position==9 ){
+				this.setExec10units(System.currentTimeMillis()-exec10units-pause);
+				//System.out.println(System.currentTimeMillis()-exec10units+" train "+this.Id+" for +10units. spd : "+this.speed);
+			}*/
+		}
+		
+		
 		currentCanton.exit();
 	}
 
@@ -220,22 +321,138 @@ public class Train extends Thread {
 	
 	public boolean hasEnteredStation (Train train, List<Station> stations){
 		for(int index = 0; index<stations.size();index++) {
-			if(train.position == stations.get(index).getPosition()){
+			if(train.position == stations.get(index).getPosition())
 				train.setCurrentStation(stations.get(index));
 				return true;
-			}
 		}
 		return false;
 	}
 	
+	/**
+	 * @author Karim
+	 *
+	 */
+	
+	// retourne le temps à une station en milliesec
+	public long TimeFromStation(Station station){
+		return ((long)DistanceFromStation(station)/10)*this.exec10units
+				+ this.getStationsdeserved().indexOf(station)*this.pause;
+	}
+	
+	//Array des différents temps d'un train au station deservis 
+	public ArrayList<Long> TimeFromStationsDeserved(){
+		ArrayList<Long> time = new ArrayList<Long>();
+		for(Station station : this.getStationsdeserved())
+			time.add(TimeFromStation(station));
+		return time;
+	}
+	
+	//Array des Station deservis par un train
+	public ArrayList<Station> getStationsdeserved() {
+		return stationsdeserved;
+	}
+
+	public void setStationsdeserved(ArrayList<Station> stationsdeserved) {
+		this.stationsdeserved = stationsdeserved;
+	}
+
+	//puisque stationdeserved est un Array des station deservis par le train
+	//on parcoure toute ces station dans lequelles sera ajouté le train qui les a deservis
+	public void LinkTrainStations(){
+		for (Station station : stationsdeserved) {
+			station.addTrainArriving(this);
+		}
+	}
+	
+	public String getType() {
+		return Id;
+	}
+
+	public void setType(String type) {
+		Id = type;
+	}
+
+	public ArrayList<Integer> getForks() {
+		return forks;
+	}
+
+	public void setForks(ArrayList<Integer> forks) {
+		this.forks = forks;
+	}
+	//calcule la distance entre la prochaine Station et le Train
+	public int DistanceFromStation(Station station){
+		return station.getPosition()-this.getPosition();
+	}
+
+	
+	public ArrayList<Integer> DistanceFromStationsDeserved(){
+		ArrayList<Integer> distances = new ArrayList<Integer>();
+		for(Station station : this.getStationsdeserved())
+			distances.add(DistanceFromStation(station));
+		return distances;
+	}
+	
+	//pour manager le train à savoir si le train reste a quai ou ne fait pas d'arret
+	//peut etre inutile
+	private int forking(){
+		int fork=0;
+		if((this.currentCanton.getId()==8)&&(forks.get(0)==1))
+			fork=1;
+		if((this.currentCanton.getId()==110)&&(forks.get(1)==1))
+			fork=2;
+		return fork;
+	}
+	
+	public boolean isStop() {
+		return stop;
+	}
+
+	public void setStop(boolean stop) {
+		this.stop = stop;
+	}
+	
+	public synchronized void restart(){
+		notify();
+	}
+
+	public long getExec10units() {
+		return exec10units;
+	}
+
+	public void setExec10units(long exec10units) {
+		this.exec10units = exec10units;
+	}
 	
 	@Override
 	public String toString() {
-		return "Train [speed=" + speed + "]";
+		return "Train [position=" + position + ", Type=" + Id + ", line=" + line + ", currentCanton=" + currentCanton
+				+ ", forks=" + forks + ", speed=" + speed + ", hasArrived="
+				+ hasArrived + "stationsdeserved["+ this.stationsdeserved.get(0).getId()+"]";
 	}
 
 	public void updatePosition() {
 		position += speed;
+	}
+	
+	private boolean deserting() {
+		for(Station station : stationsdeserved){
+			//si le train a depasser ou et dans la station qui a une pposition fixe alors
+			if((position+speed>=station.getPosition())){
+				//si la station a dans son repertoire de train le train en question on le supprime
+				if(station.getTrainsarriving().contains(this))
+					station.getTrainsarriving().remove(this);
+				//si l'Array des station deservis par le train detient la station on l'enleve de l'Array
+				if(this.getStationsdeserved().contains(station))
+					this.getStationsdeserved().remove(station);
+				//si il est vide on le supprime de la line
+				if(this.getStationsdeserved().isEmpty()){
+					this.line.getTrains().remove(this);
+				}
+				
+				return true;
+			}
+		}
+		return false;
 	}
 
 }
