@@ -1,12 +1,16 @@
 package gui;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.plaf.basic.BasicInternalFrameTitlePane.RestoreAction;
 
 import core.Canton;
@@ -15,7 +19,8 @@ import core.Station;
 import core.Train;
 
 /**
- * @author tliu@u-cergy.fr
+ * @author Karim
+ *
  */
 public class SimulationGUI extends JFrame implements Runnable {
 	private static final long serialVersionUID = 1L;
@@ -26,28 +31,22 @@ public class SimulationGUI extends JFrame implements Runnable {
 	private int currentTime = 0;
 	private SimulationDashboard dashboard; //JPanel
 	private SimulationButtonsPanel buttonPanel = new SimulationButtonsPanel();
+	private JPanel panel3boutton= new JPanel();
 	private boolean stop ;
 	private SimulationGUI instance ;
 	
 	//public static final int TIME_UNIT = 50;
+	public static Dimension screenSize ;
 	public static int TIME_UNIT = 50;
 
 	public SimulationGUI() {
 		super("EntroTrain");
 		dashboard = new SimulationDashboard();
-		
 		setLayout(new BorderLayout());
-		getContentPane().add(dashboard, BorderLayout.CENTER);
-		getContentPane().add(buttonPanel, BorderLayout.SOUTH);
+		//getContentPane().add(dashboard, BorderLayout.CENTER);
+		getContentPane().add(panel3boutton, BorderLayout.SOUTH);
 		
-		//buttonPanel.getButtonStart().addActionListener(new StartPauseAction());
-		
-		/**
-		 * @author Karim
-		 *
-		 */
-		
-		final JButton button = new JButton("STOP");
+		JButton button = new JButton("STOP");
 		button.setFocusable(false);
 		ActionListener machin = new ActionListener() {
 	    	public void actionPerformed(ActionEvent e) {
@@ -78,9 +77,10 @@ public class SimulationGUI extends JFrame implements Runnable {
 		 *
 		 */
 		//Boutton faster
-	    final JButton speedIncrease=new JButton("FASTER");
+	    JButton speedIncrease=new JButton("FASTER");
 	    speedIncrease.setFocusable(false);
 	    speedIncrease.addActionListener(new ActionListener(){
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				speedIncrease.setFocusable(true);
 				if(TIME_UNIT > 5)
@@ -93,38 +93,50 @@ public class SimulationGUI extends JFrame implements Runnable {
 		 *
 		 */
 	    //Boutton slower
-	    final JButton speedDecrease=new JButton("SLOWER");
+	    JButton speedDecrease=new JButton("SLOWER");
 	    speedDecrease.setFocusable(false);
 	    speedDecrease.addActionListener(new ActionListener(){
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				speedDecrease.setFocusable(true);
 				TIME_UNIT+=50;
 			}
-	    	
+	    	 
 	    });
-	    
-	    dashboard.add(button);
-		dashboard.add(speedIncrease);
-		dashboard.add(speedDecrease);
+	    panel3boutton.add(button);
+	    panel3boutton.add(speedIncrease);
+		panel3boutton.add(speedDecrease);
+	 
+	    screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
+	    int length = (int)screenSize.getHeight();
+	    int width = (int)screenSize.getWidth();
+		
+		JScrollPane scroll = new JScrollPane(dashboard, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS) ;
+	    scroll.setPreferredSize(new Dimension(width, length));
+		getContentPane().add(scroll, BorderLayout.CENTER);
+		
+
+	    dashboard.setPreferredSize(new Dimension(3700, 3000));
+	    //dashboard.add(button);
+		//dashboard.add(speedIncrease);
+		//dashboard.add(speedDecrease);
 		dashboard.repaint() ;    
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		setSize(1000, 700);
-		setVisible(true);
+		panel3boutton.repaint();
+		
+	    
+		this.setTitle("EntroTrain");
+	    this.setSize(width, length);
+	    this.setLocationRelativeTo(null);
+	    this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+		this.setVisible(true);
+	    this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 	}
-	
-	//Pour lancer la simulation aller dans InitialGUI
-	/*public static void main(String[] args) {
-		SimulationGUI simulationGUI = new SimulationGUI();
-		Thread simulationThread = new Thread(simulationGUI);
-		simulationThread.start();
-	}*/
-	public static void main(String[] args) {
-		SimulationGUI simulationGUI = new SimulationGUI();
-		Thread simulationThread = new Thread(simulationGUI);
-		simulationThread.start();
-	}
-	public void run() {
+
+	/**
+	 * @author tliu@u-cergy.fr
+	 */
+	public synchronized void run() {
 		int trainBasicSpeed = TRAIN_BASIC_SPEED;
 		int index = 0;
 		stop = false;
@@ -148,7 +160,7 @@ public class SimulationGUI extends JFrame implements Runnable {
 						System.out.println("Passager dans le train : " + newTrain.getTrainPassengers().size());
 						index++;
 					}
-					trainBasicSpeed += TRAIN_SPEED_VARIATION;
+					//trainBasicSpeed += TRAIN_SPEED_VARIATION;
 					System.out.println("Passager dans le train : " + newTrain.getCurrentPassengers());
 					System.out.println("Passager sur le quai " + line.getStations().get(0).getPassengers().size());
 				}
@@ -164,29 +176,4 @@ public class SimulationGUI extends JFrame implements Runnable {
 				currentTime++;
 		}
 	}
-
-	/*public void closeAction(ActionEvent closeEvent, JFrame frame) {
-		System.out.println("Simulation closed");
-	}
-	
-	/*private class StartPauseAction implements ActionListener {
-		public void actionPerformed(ActionEvent e) {
-			if (!stop) {
-				stop = true;
-				buttonPanel.getButtonStart().setText("Start");
-				Thread trainThread = new Thread(instance);
-				try {
-					trainThread.wait();
-				} catch (InterruptedException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-			} else {
-				stop = false;
-				buttonPanel.getButtonStart().setText("Pause");
-				Thread trainThread = new Thread(instance);
-				trainThread.start();
-			}
-		}
-	}*/
 }
