@@ -98,6 +98,13 @@ public class Station {
 		return passengers;
 	}	
 	
+	public void generateMorePassengers(int numberPassenger,int idDeparture, int idTerminus) {
+		for(int i=1;i<=numberPassenger;i++) {
+			Passenger pass = generatePassenger(idDeparture,idTerminus);
+			this.getPassengers().add(pass);
+		}
+	}
+	
 	public Passenger generatePassenger(int idDeparture,int idTerminus){
 		Random rand = new Random();
 		int age = 7 + rand.nextInt(99-7);

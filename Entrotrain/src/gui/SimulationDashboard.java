@@ -48,8 +48,11 @@ public class SimulationDashboard extends JPanel {
 		lineBuilder.buildLine(3800, 100);
 		//recupere les Station fu fichier ainsi que l'enssemble des cantons
 		line = lineBuilder.getBuiltLine();
-		passengers = line.getStations().get(0).generatePassengers(50, 1, 2);
-		line.getStations().get(0).setPassengers(passengers);
+		for(int i=0; i<line.getStations().size();i++) {
+			passengers = line.getStations().get(i).generatePassengers(50, line.getStations().get(i).getIdStation(), 33);
+			line.getStations().get(i).setPassengers(passengers);
+		}
+
 		
 		try {
 			getImages();
@@ -71,8 +74,9 @@ public class SimulationDashboard extends JPanel {
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D) g;
-		printTrains(g2);
 		printLine(g2);
+		printTrains(g2);
+		
 		//printStation(g2);
 		printPassengers(g2);
 	}
@@ -90,18 +94,18 @@ public class SimulationDashboard extends JPanel {
 		for (Canton canton : line.getCantons()) {
 			g2.setColor(L);
 			//position du railTransition bifuc au canton 9 id=100
-			if(canton.getId()==100){
+			/*if(canton.getId()==100){
 				g2.drawImage(transitionRailImage, START_X + canton.getStartPoint()-5, START_Y+32, 30,80, null);
 			}
 			//position du railTransition bifuc au canton 11 id=200
 			if(canton.getId()==200){
 				g2.drawImage(transitionRailImage, START_X + canton.getStartPoint()-5, START_Y+172-30, 30,80, null);
-			}
+			}*/
 			
 			g2.setColor(Color.magenta);
 			g2.setStroke(new BasicStroke(3));
 			int startPoint = canton.getStartPoint();
-			if((canton.getId()<200) && (canton.getId()>=100)){
+			/*if((canton.getId()<200) && (canton.getId()>=100)){
 				g2.drawImage(railImage, START_X + startPoint, START_Y+110, 128,32, null);
 				//1er hauteur 2eme longeur
 				g2.drawLine(START_X + startPoint, START_Y+140, START_X + startPoint, START_Y+110);			
@@ -114,12 +118,15 @@ public class SimulationDashboard extends JPanel {
 			else{
 				g2.drawImage(railImage, START_X + startPoint, START_Y, 128,32, null);
 				g2.drawLine(START_X + startPoint, START_Y, START_X + startPoint, START_Y+27);
+			}*/
+			if((canton.getId()<100) && (canton.getId()>=0)){
+				g2.drawImage(railImage, START_X + startPoint, START_Y, 128,32, null);
+				g2.drawLine(START_X + startPoint, START_Y, START_X + startPoint, START_Y+27);
 			}
-			
 			for (Station station : line.getStations()) {
 				g2.setFont(new Font("Dialog", Font.BOLD, 12));
 				g2.setColor(Color.BLACK);
-				if(cpt==1 && station.getCantonid()<200 && station.getCantonid()>=100){
+				/*if(cpt==1 && station.getCantonid()<200 && station.getCantonid()>=100){
 					g2.drawString("" + station.getId(), station.getPosition()+25, START_Y +5+100*station.getLinelevel());
 					g2.drawImage(stationImage, START_X + station.getPosition()-10, START_Y +229-100*station.getLinelevel()-20, 32,32, null);
 					cpt++;
@@ -128,8 +135,8 @@ public class SimulationDashboard extends JPanel {
 					g2.drawString("" + station.getId(), station.getPosition()+25, START_Y +55+100*station.getLinelevel());
 					g2.drawImage(stationImage, START_X + station.getPosition()-10, START_Y +229-100*station.getLinelevel()-20, 32,32, null);
 					cpt--;
-				}
-				else if(cpt==1 && station.getCantonid()>=200){
+				}*/
+				/*else if(cpt==1 && station.getCantonid()>=200){
 					g2.drawString("" + station.getId(), station.getPosition()+25, START_Y +23+100*station.getLinelevel()-1-1-1-1-1);
 					g2.drawImage(stationImage, START_X + station.getPosition()-10, START_Y+441-100*station.getLinelevel()-20, 32,32, null);
 					cpt++;
@@ -138,17 +145,17 @@ public class SimulationDashboard extends JPanel {
 					g2.drawString("" + station.getId(), station.getPosition()+25, START_Y +470-100*station.getLinelevel()-1-1-1+1);
 					g2.drawImage(stationImage, START_X + station.getPosition()-10, START_Y +441-100*station.getLinelevel()-20, 32,32, null);
 					cpt--;
-				}
-				else if(cpt==1 && station.getCantonid()<100 && station.getCantonid()>=0){
-					g2.drawString("" + station.getId(), station.getPosition()+25, START_Y -5-100*station.getLinelevel());
+				}*/
+				if(cpt==1 && station.getCantonid()<100 && station.getCantonid()>=0){
+					g2.drawString("" + station.getId(), station.getPosition()+25, START_Y +45-100*station.getLinelevel());
 					g2.drawImage(stationImage, START_X + station.getPosition()-10, START_Y +18-100*station.getLinelevel()-20, 32,32, null);
-					cpt++;
+					g2.drawString("Passenger station = " + station.getPassenger(), station.getPosition()+25, START_Y +70-100*station.getLinelevel());
 				}
-				else if(cpt==2 && station.getCantonid()<100 && station.getCantonid()>=0){
+				/*else if(cpt==2 && station.getCantonid()<100 && station.getCantonid()>=0){
 					g2.drawString("" + station.getId(), station.getPosition()+25, START_Y +45-100*station.getLinelevel());
 					g2.drawImage(stationImage, START_X + station.getPosition()-10, START_Y +18-100*station.getLinelevel()-20, 32,32, null);
 					cpt--;
-				}
+				}*/
 			}
 		}
 	}
@@ -161,15 +168,19 @@ public class SimulationDashboard extends JPanel {
 		
 		try{
 			g2.setColor(Color.MAGENTA);
+			int i=1;
 			g2.setStroke(new BasicStroke(5));
 			for (Train train : trains) {
 				if((train.getCurrentCanton().getId()>=0)&&(train.getCurrentCanton().getId()<100)){
 					g2.setFont(new Font("Dialog", Font.PLAIN, 10));
-					g2.drawString(""+train.getType(), START_X + train.getPosition(), START_Y - 25);
+					g2.drawString("Train n°"+i, START_X + train.getPosition()-30, START_Y -10);
+					//if(train.getTriomagique1()==true) {
+						g2.drawString("Passengers = "+train.getCurrentPassagengers(), START_X + train.getPosition()-30, START_Y -30);
+					//}
+					i=i+1;
 					//40=largeur 30=taille y=position sur la rail
 					g2.drawImage(trainImage, START_X + train.getPosition()-30, START_Y, 40,30, null);
 				}
-				
 			}
 		}catch (ConcurrentModificationException e) {
 			System.out.println("");
@@ -178,24 +189,35 @@ public class SimulationDashboard extends JPanel {
 	
 	private void printPassengers(Graphics2D g2) {
 		int passengerStartX = START_X;
-		int passengerStartY = START_Y + 20;
+		int passengerStartY = START_Y + 30;
 		
 		for (int index = 0; index < passengers.size(); index++) {
 			if (index % 5 == 0) {
 				passengerStartX = START_X;
-				passengerStartY += 20;
+				passengerStartY += 50;
 			}
 			passengerStartX += 10;
 			g2.drawImage(passengerImage, passengerStartX, passengerStartY, null);
 		}
 	}
 	
+	/*private void printPassengers(Graphics2D g2) {
+		int passengerStartX = START_X;
+		int passengerStartY = START_Y +20;
+		for (int index = 0; index < passengers.size(); index++) {
+			if (index % 5 == 0) {
+				passengerStartX += 150;
+				passengerStartY = START_Y + 50;
+			}
+			passengerStartX += 10;
+			g2.drawImage(passengerImage, passengerStartX, passengerStartY, null);
+		}
+	}*/
 	private void getImages() throws IOException {
 		stationImage = ImageIO.read(new File("./img/entrotrain_station.png"));
 		trainImage = ImageIO.read(new File("./img/entrotrain_train.png"));
 		passengerImage = ImageIO.read(new File("./img/entrotrain_passenger.png"));
 		railImage = ImageIO.read(new File("./img/rail.png"));
-		transitionRailImage = ImageIO.read(new File("./img/railTransit.png"));
 	}
 	
 	public Line getLine() {

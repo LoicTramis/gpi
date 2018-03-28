@@ -11,9 +11,11 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.plaf.basic.BasicInternalFrameTitlePane.RestoreAction;
 
+import javax.swing.JTextField;
+import javax.swing.plaf.basic.BasicInternalFrameTitlePane.RestoreAction;
 import core.Canton;
+import core.GenerateStation;
 import core.Line;
 import core.Station;
 import core.Train;
@@ -29,9 +31,12 @@ public class SimulationGUI extends JFrame implements Runnable {
 	private static final int SIMULATION_DURATION = 10000;
 	private static final int MAX_PASSENGER = 5;
 	private int currentTime = 0;
+	private boolean triomagique=false;
 	private SimulationDashboard dashboard; //JPanel
 	private SimulationButtonsPanel buttonPanel = new SimulationButtonsPanel();
 	private JPanel panel3boutton= new JPanel();
+	//private JTextField textFieldStation = new JTextField("", 20);
+	//private JTextField textFieldTrain = new JTextField("", 20);
 	private boolean stop ;
 	private SimulationGUI instance ;
 	
@@ -45,7 +50,6 @@ public class SimulationGUI extends JFrame implements Runnable {
 		setLayout(new BorderLayout());
 		//getContentPane().add(dashboard, BorderLayout.CENTER);
 		getContentPane().add(panel3boutton, BorderLayout.SOUTH);
-		
 		JButton button = new JButton("STOP");
 		button.setFocusable(false);
 		ActionListener machin = new ActionListener() {
@@ -139,20 +143,35 @@ public class SimulationGUI extends JFrame implements Runnable {
 	public synchronized void run() {
 		int trainBasicSpeed = TRAIN_BASIC_SPEED;
 		int index = 0;
+		int counter=0;
+		int trainchoice;
+		String type;
+		int i = 0;
+		int speed;
+		Canton startcanton;
+		ArrayList<Station> stationsdeserved = new ArrayList<Station>();
+		ArrayList<Integer> forks = new ArrayList<Integer>();
+		Line line = dashboard.getLine();
+		List<Station> stations = line.getStations();
+		
 		stop = false;
 		while (currentTime <= SIMULATION_DURATION) {
+			triomagique=false;
 			
 			if (currentTime % 12 == 0) {
-				Line line = dashboard.getLine();
+
 				Canton firstCanton = line.getCantons().get(0);
-				List<Station> stations = line.getStations();
+				//ArrayList<Train> trains = GenerateStation.parseconfigfiletrain(line);
 				System.out.println("Passager : " + stations.get(0).getPassengers().size());
 				int currentPassenger = 0;
 				
 				if (firstCanton.isFree()) {
+					
 					Train newTrain = new Train(line, firstCanton, stations.get(0), trainBasicSpeed, currentPassenger, MAX_PASSENGER);
 					dashboard.addTrain(newTrain);
 					newTrain.start();
+					
+				
 					if (stations.get(0).getPassengers().size() != 0) {
 						newTrain.trainBoarding(stations.get(0));
 						System.out.println("Train :" + index);
@@ -166,6 +185,11 @@ public class SimulationGUI extends JFrame implements Runnable {
 				}
 
 			}
+			counter++;
+			if(counter%20==0) {
+				triomagique=true;
+				refill_stations(stations);
+			}
 			dashboard.repaint();
 			try {
 				Thread.sleep(TIME_UNIT);
@@ -176,4 +200,16 @@ public class SimulationGUI extends JFrame implements Runnable {
 				currentTime++;
 		}
 	}
+
+	public void refill_stations(List<Station> stations) {
+		for(int i=0;i<stations.size();i++) {
+			stations.get(i).generateMorePassengers(5*(stations.get(i).getPopularity()),stations.get(i).getIdStation(),33);
+		}
+		
+	}
+	
+	public boolean getTriomagique() {
+		return this.triomagique;
+	}
+	
 }

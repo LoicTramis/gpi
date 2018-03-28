@@ -4,12 +4,36 @@ package core;
  * @version 1.0
  */
 
-public class Incident {
+public class Incident extends Thread {
 	private int degree_of_incident;
+	private int time_of_solving;
 	private boolean isSolved = false;
 	
-	public Incident(int degree_of_incident) {
+	public Incident(int degree_of_incident, int time_of_solving) {
 		this.degree_of_incident = degree_of_incident;
+		this.time_of_solving = time_of_solving;
+	}
+	
+	
+	
+	public synchronized void stopTrain(Train train) {
+		if(isSolved != true){
+			try {
+				train.setPosition(train.getPosition() - 1);
+				wait(time_of_solving); //attendre 5 sec
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			} 
+			trainNotify();	
+		}
+	}
+
+
+
+
+	public synchronized void trainNotify(){
+		this.setIsSolved(true);
+		notify();
 	}
 	/**
 	 * This method is to generate the time of the incident
@@ -57,31 +81,19 @@ public class Incident {
 	public boolean getIsSolved(){
 		return this.isSolved;
 	}
+	public void setIsSolved(boolean bool){
+		this.isSolved = bool;
+	}
+	
+	public int getTime_of_solving() {
+		return time_of_solving;
+	}
+
+
+
+	public void setTime_of_solving(int time_of_solving) {
+		this.time_of_solving = time_of_solving;
+	}
 }
 
 
-
-
-
-
-
-
-
-	/*
-	 *
-	 * A incorporer dans la méthode run() du GUI 
-	
-		Random x = new Random();
-		if (x.nextInt(5) == 4) gene; //RAPPEL : nextInt retoure une valeur comprise dans [0,5[ donc ici 1 chance sur 5 qu'un incident se produise  
-		
-		while (train_problem.getIsSolved() != true && train.getIncident().getIncidentTime() > 0 ){
-			if (train.getSpeed() != 0) {
-				originalSpeed = train.getSpeed();
-				train.setSpeed(0);
-			}
-		}
-		train.setSpeed(originalSpeed);
-
-	/*
-	 *
-	*/

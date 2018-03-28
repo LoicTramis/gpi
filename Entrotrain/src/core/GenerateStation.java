@@ -18,7 +18,7 @@ import core.Train;
 import exception.TerminusException;
 
 /**
- * @author Antoine
+ * @author Mohamed II BAYO
  *
  */
 
@@ -53,6 +53,7 @@ public class GenerateStation {
 						linelevel = Integer.parseInt(linesplitted[1].substring(4));
 						
 						station = new Station(stationid,position, linelevel);
+						station.setPopularity(2);//A AMELIORER AVEC LE FICHIER CONFIG
 						station.setCantonid(stationline.getCantonById(Integer.parseInt(linesplitted2[1])).getId());
 						stations.add(station);
 					} catch (TerminusException e) {
@@ -75,90 +76,7 @@ public class GenerateStation {
 		return stations;
 	}
 	
-	public static ArrayList<Train> parseconfigfiletrain(Line trainline){
-		File configfile;
-		try{
-			configfile = new File("./Entrotrain/src/fichier/ListTrains.txt");
-		}catch( NullPointerException e){
-			configfile = new File("/home/bayo/git/gpi/Entrotrain/src/fichier/ListTrains.txt");
-		}
-		String line="1:2";
-		String[] linesplitted = null;
-		String[] linesplitted2 = null;
-		ArrayList<Train> trains = new ArrayList<Train>();
-		
-		
-		Train train ;
-		int trainstationdeservedid;
-		ArrayList<Station> trainstationsdeserved;
-		String traintype;
-		int trainstartCantonId;
-		Canton trainstartCanton;
-		int trainspeed;
-		ArrayList<Integer> forks;
-		int fork;
-		
-		int j=3;
-		
-		
-		try {
-			BufferedReader configfilereader = new BufferedReader(new FileReader(configfile));
-			try {
-				while((line=configfilereader.readLine()) != null){
-
-						linesplitted = line.split(":");
-						
-						
-						traintype = linesplitted[0].substring(5);
-						
-						trainstartCantonId = Integer.parseInt(linesplitted[1].substring(12)); 
-						trainstartCanton = trainline.getCantons().get(trainstartCantonId-1);
-						
-						trainspeed = Integer.parseInt(linesplitted[2].substring(6));
-						
-						trainstationsdeserved = new ArrayList<Station>();
-						linesplitted2 = linesplitted[3].split(",");
-						for(int i=0; i<linesplitted2.length; i++){
-							if(i==0){
-								trainstationdeservedid = Integer.parseInt(linesplitted2[i].substring(5));
-								trainstationsdeserved.add(trainline.getStations().get(trainstationdeservedid-1));
-							}else{
-								trainstationdeservedid = Integer.parseInt(linesplitted2[i]);
-								trainstationsdeserved.add(trainline.getStations().get(trainstationdeservedid-1));
-							}
-							
-						}
-						
-						forks = new ArrayList<Integer>();
-						linesplitted2 = linesplitted[4].split(",");
-						for(int i=0; i<linesplitted2.length ; i++){
-							if(i==0){
-								fork = Integer.parseInt(linesplitted2[i].substring(6,7));
-								forks.add(fork);
-							}else{
-								fork = Integer.parseInt(linesplitted2[i]);
-								forks.add(fork);
-							}
-						}
-						train = new Train(trainline, trainstartCanton,trainspeed,trainstationsdeserved,traintype, forks, 1);
-						trains.add(train);
-					
-					
-				}
-			} catch (NumberFormatException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return trains;
-		
-	}
+	
 }
 
 

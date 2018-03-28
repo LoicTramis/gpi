@@ -1,5 +1,7 @@
 package core;
 
+import java.util.Random;
+
 /**
  * @author tliu@u-cergy.fr
  */
@@ -9,6 +11,8 @@ public class Canton {
 	private int length;
 	private int fork;
 	private Train occupyingTrain = null;
+	private Incident incident = null;
+
 
 	public Canton(int id, int length, int startPoint) {
 		this.id = id;
@@ -52,7 +56,7 @@ public class Canton {
 				System.err.println(e.getMessage());
 			}
 		}
-
+		//train.setPosition(startPoint - 1);
 //		System.out.println("Canton changed successfully");
 		Canton oldCanton = train.getCurrentCanton();
 		train.setCurrentCanton(this);
@@ -69,6 +73,14 @@ public class Canton {
 		notify();
 //		System.out.println("Canton freed !");
 	}
+	
+	public void spawnIncident(){
+		Random x = new Random();
+		if( x.nextInt(200) == 0){ //1 chance sur 50
+			Incident train_problem = new Incident(x.nextInt(10), 3000);
+			this.setIncident(train_problem);
+		}
+	}
 
 	public boolean isFree() {
 		return occupyingTrain == null;
@@ -82,5 +94,19 @@ public class Canton {
 	public int getId() {
 		return id;
 	}
+	public Incident getIncident() {
+		return incident;
+	}
 
+	public void setIncident(Incident incident) {
+		this.incident = incident;
+	}
+	
+	public Train getOccupyingTrain() {
+		return occupyingTrain;
+	}
+
+	public void setOccupyingTrain(Train occupyingTrain) {
+		this.occupyingTrain = occupyingTrain;
+	}
 }

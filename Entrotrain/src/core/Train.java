@@ -18,6 +18,7 @@ import core.Station;
  */
 public class Train extends Thread {
 	private volatile int position = 0;
+	private boolean triomagique1=false;
 	private Line line;
 	private Canton currentCanton;
 	private Station currentStation;
@@ -25,6 +26,7 @@ public class Train extends Thread {
 	private int currentPassengers = 0;  //train leaves garage with 0 passengers
 	private ArrayList<Passenger> trainPassengers = new ArrayList<Passenger>();
 	private int maxPassenger;
+	private int passengers = 0;
 	
 	/**
 	 * @author Karim
@@ -199,94 +201,6 @@ public class Train extends Thread {
 		this.incident=incident;
 	}
 	
-	public void generateIncident(Train train){
-		Random x = new Random();
-		Incident train_problem = new Incident(x.nextInt(10));
-		train.setIncident(train_problem);
-	}
-
-	@Override
-	/*public void run() {
-		while (!hasArrived) {
-			if(stop){
-				try {
-					//System.out.println("repartisNNNNNNN\n");
-					wait();
-					//System.out.println("repartis\n");
-					
-				} catch (InterruptedException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-				this.stop=false;
-			}
-			try {
-				sleep(SimulationGUI.TIME_UNIT);
-			} catch (InterruptedException e) {
-				System.err.println(e.getMessage());
-			}
-			if (position + speed >= currentCanton.getEndPoint()) {
-				try {
-					Canton nextCanton = line.getCantonByPosition(position + speed);
-					nextCanton.enter(this);
-				} catch (TerminusException e) {
-					hasArrived = true;
-					position = line.getTotalLenght();
-				}
-			} else {
-				updatePosition();
-				if (hasEnteredStation(this,line.getStations())) {
-					trainUnboarding();
-					trainBoarding(this.currentStation);
-				}
-			}
-		}
-		currentCanton.exit();
-	}*/
-	
-	//Utiliser cette methode run pour que le boutton stop fonctionne correctement
-	public synchronized void run() {
-		while (!hasArrived) {
-			if(stop){
-				try {
-					//System.out.println("repartisNNNNNNN\n");
-					wait();
-					//System.out.println("repartis\n");
-					
-				} catch (InterruptedException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-				this.stop=false;
-			}
-			try {
-				sleep(SimulationGUI.TIME_UNIT);
-			} catch (InterruptedException e) {
-				System.err.println(e.getMessage());
-			}
-			if (position + speed >= currentCanton.getEndPoint()) {
-				try {
-					Canton nextCanton = line.getCantonByPosition(position + speed);
-					nextCanton.enter(this);
-				} catch (TerminusException e) {
-					hasArrived = true;
-					position = line.getTotalLenght();
-				}
-			} else {
-		
-				updatePosition();
-				
-			}
-			
-		/*	if(position==9 ){
-				this.setExec10units(System.currentTimeMillis()-exec10units-pause);
-				//System.out.println(System.currentTimeMillis()-exec10units+" train "+this.Id+" for +10units. spd : "+this.speed);
-			}*/
-		}
-		
-		
-		currentCanton.exit();
-	}
 
 	
 	/***
@@ -321,12 +235,67 @@ public class Train extends Thread {
 	
 	public boolean hasEnteredStation (Train train, List<Station> stations){
 		for(int index = 0; index<stations.size();index++) {
-			if(train.position == stations.get(index).getPosition())
+			if(train.position == stations.get(index).getPosition()){
 				train.setCurrentStation(stations.get(index));
 				return true;
+			}
 		}
 		return false;
 	}
+
+
+	@Override
+	public synchronized void run() {
+		while (!hasArrived) {
+			triomagique1=false;
+			if(stop){
+				try {
+					//System.out.println("repartisNNNNNNN\n");
+					wait();
+					//System.out.println("repartis\n");
+					
+				} catch (InterruptedException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				this.stop=false;
+			}
+			try {
+				sleep(SimulationGUI.TIME_UNIT);
+			} catch (InterruptedException e) {
+				System.err.println(e.getMessage());
+			}
+			if (position + speed >= currentCanton.getEndPoint()) {
+				try {
+					Canton nextCanton = line.getCantonByPosition(position + speed);
+					nextCanton.enter(this);
+				} catch (TerminusException e) {
+					hasArrived = true;
+					position = line.getTotalLenght();
+				}
+			} else {
+				this.getCurrentCanton().spawnIncident(); //1/4 qu'un incident apparaisse
+				if (this.getCurrentCanton().getIncident() != null){ 
+					if (this.getCurrentCanton().getIncident().getIsSolved() == false){
+						System.out.println("Train on canton " + this.getCurrentCanton().getId() + " was stopped by an incident");
+						//this.setPosition(position - 1);
+						this.getCurrentCanton().getIncident().stopTrain(this);
+						this.getCurrentCanton().setIncident(null);
+					}
+				}
+				updatePosition();
+				if (hasEnteredStation(this,line.getStations())) {
+					trainUnboarding();
+					trainBoarding(this.currentStation);
+					triomagique1=true;
+				}
+			}
+		}
+		currentCanton.exit();
+	}
+	
+
+	
 	
 	/**
 	 * @author Karim
@@ -434,6 +403,9 @@ public class Train extends Thread {
 		position += speed;
 	}
 	
+	public boolean getTriomagique1() {
+		return this.triomagique1;
+	}
 	private boolean deserting() {
 		for(Station station : stationsdeserved){
 			//si le train a depasser ou et dans la station qui a une pposition fixe alors
@@ -453,6 +425,10 @@ public class Train extends Thread {
 			}
 		}
 		return false;
+	}
+	
+	public int getCurrentPassagengers() {
+		return trainPassengers.size();
 	}
 
 }
