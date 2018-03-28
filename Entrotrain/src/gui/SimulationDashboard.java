@@ -49,7 +49,7 @@ public class SimulationDashboard extends JPanel {
 		//recupere les Station fu fichier ainsi que l'enssemble des cantons
 		line = lineBuilder.getBuiltLine();
 		for(int i=0; i<line.getStations().size();i++) {
-			passengers = line.getStations().get(i).generatePassengers(50, line.getStations().get(i).getIdStation(), 33);
+			passengers = line.getStations().get(i).generatePassengers(50, line.getStations().get(i).getIdStation(),16);
 			line.getStations().get(i).setPassengers(passengers);
 		}
 

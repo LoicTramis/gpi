@@ -10,7 +10,7 @@ public class IncidentTest {
 
 	@Test
 	public void test() {
-		Incident test = new Incident(0);
+		Incident test = new Incident(0, 0);
 		assertEquals(2,test.getIncidentTime(1)); 
 		assertEquals(3,test.getIncidentTime(2));
 		assertEquals(4,test.getIncidentTime(5));

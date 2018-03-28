@@ -31,10 +31,11 @@ public class Station {
 	 * @author Karim
 	 *
 	 */
-	public Station(String id, int position, int linelevel){
+	public Station(String id, int position, int linelevel,int idStation){
 		this.id=id;
 		this.position=position;
 		this.linelevel=linelevel;
+		this.idStation=idStation;
 	}
 	
 	public Station(int numberPassenger, int popularity, int idStation2, int position, ArrayList<Passenger> passengers) {
@@ -108,7 +109,9 @@ public class Station {
 	public Passenger generatePassenger(int idDeparture,int idTerminus){
 		Random rand = new Random();
 		int age = 7 + rand.nextInt(99-7);
-		int idStationArrival = (idDeparture+1)+rand.nextInt(idTerminus-idDeparture+1);
+		
+		int idStationArrival = (idDeparture)+rand.nextInt(idTerminus-idDeparture+1);
+		System.out.println(idStationArrival);
 		ArrayList<String> sexs = new ArrayList<String>();
 		sexs.add("m");
 		sexs.add("s");

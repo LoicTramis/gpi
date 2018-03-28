@@ -129,8 +129,8 @@ public class Line {
 	 *
 	 */
 
-	public void addStation(String id, int stationPosition, int linelevel){
-		Station station = new Station(id, stationPosition, linelevel);
+	public void addStation(String id, int stationPosition, int linelevel,int idS){
+		Station station = new Station(id, stationPosition, linelevel, idS);
 		stations.add(station);
 	}
 	

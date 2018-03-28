@@ -30,7 +30,7 @@ public class GenerateStation {
 		String[] linesplitted;
 		String[] linesplitted2;
 		File configfile;
-		
+		int id=0;
 		int linelevel;
 		String stationid;
 		int position;
@@ -52,15 +52,15 @@ public class GenerateStation {
 						position = stationline.getCantonById(Integer.parseInt(linesplitted2[1])).getStartPoint()-5;
 						linelevel = Integer.parseInt(linesplitted[1].substring(4));
 						
-						station = new Station(stationid,position, linelevel);
+						station = new Station(stationid,position, linelevel, id);
 						station.setPopularity(2);//A AMELIORER AVEC LE FICHIER CONFIG
 						station.setCantonid(stationline.getCantonById(Integer.parseInt(linesplitted2[1])).getId());
 						stations.add(station);
+						id++;
 					} catch (TerminusException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-					
 				}
 			} catch (NumberFormatException e) {
 				// TODO Auto-generated catch block

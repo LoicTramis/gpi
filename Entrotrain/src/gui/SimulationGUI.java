@@ -50,7 +50,7 @@ public class SimulationGUI extends JFrame implements Runnable {
 		setLayout(new BorderLayout());
 		//getContentPane().add(dashboard, BorderLayout.CENTER);
 		getContentPane().add(panel3boutton, BorderLayout.SOUTH);
-		JButton button = new JButton("STOP");
+		final JButton button = new JButton("STOP");
 		button.setFocusable(false);
 		ActionListener machin = new ActionListener() {
 	    	public void actionPerformed(ActionEvent e) {
@@ -81,10 +81,9 @@ public class SimulationGUI extends JFrame implements Runnable {
 		 *
 		 */
 		//Boutton faster
-	    JButton speedIncrease=new JButton("FASTER");
+	    final JButton speedIncrease=new JButton("FASTER");
 	    speedIncrease.setFocusable(false);
 	    speedIncrease.addActionListener(new ActionListener(){
-			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				speedIncrease.setFocusable(true);
 				if(TIME_UNIT > 5)
@@ -97,10 +96,9 @@ public class SimulationGUI extends JFrame implements Runnable {
 		 *
 		 */
 	    //Boutton slower
-	    JButton speedDecrease=new JButton("SLOWER");
+	    final JButton speedDecrease=new JButton("SLOWER");
 	    speedDecrease.setFocusable(false);
 	    speedDecrease.addActionListener(new ActionListener(){
-			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				speedDecrease.setFocusable(true);
 				TIME_UNIT+=50;
@@ -202,8 +200,8 @@ public class SimulationGUI extends JFrame implements Runnable {
 	}
 
 	public void refill_stations(List<Station> stations) {
-		for(int i=0;i<stations.size();i++) {
-			stations.get(i).generateMorePassengers(5*(stations.get(i).getPopularity()),stations.get(i).getIdStation(),33);
+		for(int i=0;i<stations.size()-1;i++) {
+			stations.get(i).generateMorePassengers(5*(stations.get(i).getPopularity()),stations.get(i).getIdStation(),16);
 		}
 		
 	}
