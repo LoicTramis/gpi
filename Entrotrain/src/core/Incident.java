@@ -20,19 +20,21 @@ public class Incident extends Thread {
 		if(isSolved != true){
 			try {
 				train.setPosition(train.getPosition() - 1);
+				train.setStop(true);
 				wait(time_of_solving); //attendre 5 sec
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			} 
-			trainNotify();	
+			trainNotify(train);	
 		}
 	}
 
 
 
 
-	public synchronized void trainNotify(){
+	public synchronized void trainNotify(Train train){
 		this.setIsSolved(true);
+		train.setStop(false);
 		notify();
 	}
 	/**

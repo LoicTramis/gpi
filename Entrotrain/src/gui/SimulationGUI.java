@@ -1,7 +1,11 @@
 package gui;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -12,13 +16,12 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
-import javax.swing.JTextField;
-import javax.swing.plaf.basic.BasicInternalFrameTitlePane.RestoreAction;
+import javax.swing.border.Border;
 import core.Canton;
-import core.GenerateStation;
 import core.Line;
 import core.Station;
 import core.Train;
+import statistique.StatistiqueCore;
 
 /**
  * @author Karim
@@ -26,19 +29,18 @@ import core.Train;
  */
 public class SimulationGUI extends JFrame implements Runnable {
 	private static final long serialVersionUID = 1L;
-	private static final int TRAIN_SPEED_VARIATION = 3;
 	private static final int TRAIN_BASIC_SPEED = 5;
 	private static final int SIMULATION_DURATION = 10000;
 	private static final int MAX_PASSENGER = 10000;
 	private int currentTime = 0;
 	private boolean triomagique=false;
 	private SimulationDashboard dashboard; //JPanel
-	private SimulationButtonsPanel buttonPanel = new SimulationButtonsPanel();
+	private StatistiqueCore statistic;
+	private JPanel panelTab= new JPanel();
 	private JPanel panel3boutton= new JPanel();
 	//private JTextField textFieldStation = new JTextField("", 20);
 	//private JTextField textFieldTrain = new JTextField("", 20);
 	private boolean stop ;
-	private SimulationGUI instance ;
 	
 	//public static final int TIME_UNIT = 50;
 	public static Dimension screenSize ;
@@ -47,69 +49,128 @@ public class SimulationGUI extends JFrame implements Runnable {
 	public SimulationGUI() {
 		super("EntroTrain");
 		dashboard = new SimulationDashboard();
+		statistic = new StatistiqueCore("EntroStats"); // je sais pas mtn
 		setLayout(new BorderLayout());
-		//getContentPane().add(dashboard, BorderLayout.CENTER);
+		getContentPane().add(panelTab, BorderLayout.NORTH);
 		getContentPane().add(panel3boutton, BorderLayout.SOUTH);
-		JButton button = new JButton("STOP");
-		button.setFocusable(false);
-		ActionListener machin = new ActionListener() {
+		/**
+		 * @author Loic
+		 */
+		JButton animationButton = new JButton("Simulation");
+		JButton statisticButton = new JButton("Statistiques");
+		
+		animationButton.setFocusable(false);
+		animationButton.setAlignmentX(0);
+		animationButton.setUI(new ButtonDesign());
+		animationButton.setPreferredSize(new Dimension(120, 40));
+		animationButton.setBorder(new RoundedBorder(10)); //10 is the radius
+		animationButton.setBackground(Color.LIGHT_GRAY);
+		animationButton.setForeground(Color.WHITE);
+		// show the simulation
+		animationButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				dashboard.setVisible(true);
+			}
+		});
+		
+		statisticButton.setFocusable(false);
+		statisticButton.setUI(new ButtonDesign());
+		statisticButton.setPreferredSize(new Dimension(120, 40));
+		statisticButton.setBorder(new RoundedBorder(10)); //10 is the radius
+		statisticButton.setBackground(Color.LIGHT_GRAY);
+		statisticButton.setForeground(Color.WHITE);
+		// show the statistics
+		statisticButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				dashboard.setVisible(false);
+				
+			}
+		});
+		
+		panelTab.add(animationButton);
+		panelTab.add(statisticButton);
+		/**
+		 * @author Karim
+		 *
+		 */
+		JButton stopButton = new JButton("STOP");
+		JButton fastButton = new JButton("FAST");// Boutton faster
+		JButton slowButton = new JButton("SLOW");// Boutton slower
+		
+		stopButton.setFocusable(false);
+		stopButton.setAlignmentX(0);
+		stopButton.setUI(new ButtonDesign());
+		stopButton.setPreferredSize(new Dimension(180, 60));
+		stopButton.setBorder(new RoundedBorder(10)); //10 is the radius
+		stopButton.setBackground(Color.RED);
+		stopButton.setForeground(Color.WHITE);
+		
+		stopButton.addActionListener(new ActionListener() {
 	    	public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-	    		button.setFocusable(true);
+	    		stopButton.setFocusable(true);
 	    		if(stop){
-					System.out.println("        RESUMED       ");
-				button.setText("STOP");
-				//POUR QUE LE BOUTON MARCHE IL FAUT REMPLIR L4ARRAY LIST trains dans dashboard
-				for(Train train : dashboard.getTrains())
-					train.restart();
-				stop=false;
+	    			stopButton.setText("STOP");
+	    			stopButton.setBackground(Color.RED);
+	    			stopButton.setForeground(Color.WHITE);
+					System.out.println("------RESUMED------");
+					//POUR QUE LE BOUTON MARCHE IL FAUT REMPLIR L4ARRAY LIST trains dans dashboard
+					for(Train train : dashboard.getTrains())
+						train.setSpeed(TRAIN_BASIC_SPEED);
+					stop=false;
+					
 				}
 				else{
-					button.setText("RESUME");
-					System.out.println("       PAUSED       ");
+					stopButton.setText("RESUME");
+					stopButton.setBackground(Color.GREEN);
+					stopButton.setForeground(Color.BLACK);
+					System.out.println("------PAUSED------");
 					for(Train train : dashboard.getTrains())
-						train.setStop(true);
+						train.setSpeed(0);
 					stop=true;
 				}
 			}
-		};
-		button.setAlignmentX(0);
-		button.addActionListener(machin);
+		});
+
+
+
 		
-		/**
-		 * @author Karim
-		 *
-		 */
-		//Boutton faster
-	    JButton speedIncrease=new JButton("FASTER");
-	    speedIncrease.setFocusable(false);
-	    speedIncrease.addActionListener(new ActionListener(){
+	    fastButton.setFocusable(false);
+	    fastButton.setUI(new ButtonDesign());
+	    fastButton.setBackground(Color.BLUE);
+	    fastButton.setForeground(Color.WHITE);
+	    fastButton.setPreferredSize(new Dimension(180, 60));
+	    fastButton.setBorder(new RoundedBorder(10)); //10 is the radius
+	    
+	    fastButton.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				speedIncrease.setFocusable(true);
+				fastButton.setFocusable(true);
 				if(TIME_UNIT > 5)
-					TIME_UNIT-=5;
+					TIME_UNIT = 10;
 			}
 	    });
+	    	    
+	    slowButton.setFocusable(false);
+	    slowButton.setUI(new ButtonDesign());
+	    slowButton.setBackground(Color.ORANGE);
+	    slowButton.setForeground(Color.WHITE);
+	    slowButton.setPreferredSize(new Dimension(180, 60));
+	    slowButton.setBorder(new RoundedBorder(10)); //10 is the radius
 	    
-		/**
-		 * @author Karim
-		 *
-		 */
-	    //Boutton slower
-	    JButton speedDecrease=new JButton("SLOWER");
-	    speedDecrease.setFocusable(false);
-	    speedDecrease.addActionListener(new ActionListener(){
+	    slowButton.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				speedDecrease.setFocusable(true);
-				TIME_UNIT+=50;
+				slowButton.setFocusable(true);
+				TIME_UNIT = 100;
 			}
 	    	 
 	    });
-	    panel3boutton.add(button);
-	    panel3boutton.add(speedIncrease);
-		panel3boutton.add(speedDecrease);
+	    
+	    panel3boutton.add(stopButton);
+	    panel3boutton.add(fastButton);
+		panel3boutton.add(slowButton);
 	 
 	    screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
 	    int length = (int)screenSize.getHeight();
@@ -120,12 +181,10 @@ public class SimulationGUI extends JFrame implements Runnable {
 		getContentPane().add(scroll, BorderLayout.CENTER);
 		
 
-	    dashboard.setPreferredSize(new Dimension(3700, 3000));
-	    //dashboard.add(button);
-		//dashboard.add(speedIncrease);
-		//dashboard.add(speedDecrease);
+	    dashboard.setPreferredSize(new Dimension(1400, 720));
 		dashboard.repaint() ;    
 		panel3boutton.repaint();
+		panelTab.repaint();
 		
 	    
 		this.setTitle("EntroTrain");
@@ -211,5 +270,33 @@ public class SimulationGUI extends JFrame implements Runnable {
 	public boolean getTriomagique() {
 		return this.triomagique;
 	}
-	
+	/**
+	 * Put a border around the button
+	 * 
+	 * @author Loic Tramis
+	 */
+	private static class RoundedBorder implements Border {
+
+	    private int radius;
+
+
+	    RoundedBorder(int radius) {
+	        this.radius = radius;
+	    }
+
+
+	    public Insets getBorderInsets(Component c) {
+	        return new Insets(this.radius+1, this.radius+1, this.radius+2, this.radius);
+	    }
+
+
+	    public boolean isBorderOpaque() {
+	        return true;
+	    }
+
+
+	    public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
+	        g.drawRoundRect(x, y, width-1, height-1, radius, radius);
+	    }
+	}
 }
