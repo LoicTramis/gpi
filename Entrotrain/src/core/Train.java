@@ -213,6 +213,7 @@ public class Train extends Thread {
 		for(index = 0; index<this.trainPassengers.size();index++) {
 			if(this.trainPassengers.get(index).getIdArrival()==this.currentStation.getIdStation()){
 				this.currentStation.getPassengers().add(this.trainPassengers.get(index));
+				this.trainPassengers.get(index).setUnboard(true);
 				this.trainPassengers.remove(index);
 			}
 		}

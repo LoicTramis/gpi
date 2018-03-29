@@ -9,6 +9,7 @@ public class Passenger {
 	private int idArrival; 
 	private int idDeparture;
 	private int satisfaction;
+	private boolean unboard;
 
 
 	public Passenger(int age, String sex, int idArrival, int idDeparture, int satisfaction){
@@ -17,6 +18,7 @@ public class Passenger {
 		this.idArrival = idArrival;
 		this.idDeparture = idDeparture;
 		this.satisfaction = satisfaction;
+		unboard = false;
 	}	
 
 	
@@ -39,6 +41,9 @@ public class Passenger {
 	public String getSex() {
 		return sex;
 	}
+	public boolean getUnboard() {
+		return unboard;
+	}
 	public Passenger update_satisfaction(Passenger pass,int value) {
 		pass.setSatisfaction(pass.getSatisfaction()-value);
 		return pass;
@@ -49,9 +54,9 @@ public class Passenger {
 	public void setSatisfaction(int satisfaction) {
 		this.satisfaction = satisfaction;
 	}
-	
-	
-	
+	public void setUnboard(boolean bool) {
+		unboard = bool;
+	}
 
 }
 

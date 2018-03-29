@@ -71,6 +71,9 @@ public class SimulationGUI extends JFrame implements Runnable {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				dashboard.setVisible(true);
+				panel3boutton.setVisible(true);
+				dashboard.repaint() ;    
+				panel3boutton.repaint();
 			}
 		});
 		
@@ -85,6 +88,7 @@ public class SimulationGUI extends JFrame implements Runnable {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				dashboard.setVisible(false);
+				panel3boutton.setVisible(false);
 				
 			}
 		});

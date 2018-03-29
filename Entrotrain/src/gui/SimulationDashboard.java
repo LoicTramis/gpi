@@ -34,9 +34,9 @@ public class SimulationDashboard extends JPanel {
 	private BufferedImage trainFailImage = null;
 	private BufferedImage railImage = null;
 	private BufferedImage railBrokeImage = null;
-	private BufferedImage transitionRailImage = null;
-	
-	private BufferedImage passengerImage = null;
+
+	private BufferedImage passengerUpImage = null;
+	private BufferedImage passengerDownImage = null;
 	private Line line;
 	private List<Train> trains = new ArrayList<Train>();
 	private ArrayList<Passenger> passengers = new ArrayList<Passenger>();
@@ -150,10 +150,24 @@ public class SimulationDashboard extends JPanel {
 					g2.drawImage(stationImage, START_X + station.getPosition()-10, START_Y +441-100*station.getLinelevel()-20, 32,32, null);
 					cpt--;
 				}*/
-				if(cpt==1 && station.getCantonid()<100 && station.getCantonid()>=0){
+				if(cpt==1 && station.getCantonid()<100 && station.getCantonid() >= 0){
+					int number = 0;
+					for (Passenger passenger : passengers) {
+						if (passenger.getUnboard()) {
+							number++;
+							System.out.println("Un passager est descendu");
+						}
+					}
+					
+					// the station
 					g2.drawString("" + station.getId(), station.getPosition()+25, START_Y +45-100*station.getLinelevel());
 					g2.drawImage(stationImage, START_X + station.getPosition()-10, START_Y +2-100*station.getLinelevel()-20, null);
-					g2.drawString("Passenger station = " + station.getPassengers().size(), station.getPosition()+25, START_Y +70-100*station.getLinelevel());
+					// the passengers board
+					g2.drawImage(passengerUpImage, station.getPosition()+10, START_Y +50-100*station.getLinelevel(), null);
+					g2.drawString(station.getPassengers().size() + " attendent un train.", station.getPosition()+25, START_Y +65-100*station.getLinelevel());
+					// the passengers unboard
+					g2.drawImage(passengerDownImage, station.getPosition()+10, START_Y +80-100*station.getLinelevel(), null);
+					g2.drawString(number + " sont descendus.", station.getPosition()+25, START_Y +95-100*station.getLinelevel());
 				}
 				/*else if(cpt==2 && station.getCantonid()<100 && station.getCantonid()>=0){
 					g2.drawString("" + station.getId(), station.getPosition()+25, START_Y +45-100*station.getLinelevel());
@@ -165,7 +179,7 @@ public class SimulationDashboard extends JPanel {
 	}
 	
 	/**
-	 * @author Karim
+	 * @author Loic
 	 *
 	 */
 	private void printTrains(Graphics2D g2){
@@ -175,11 +189,8 @@ public class SimulationDashboard extends JPanel {
 			g2.setStroke(new BasicStroke(5));
 			for (Train train : trains) {
 				if((train.getCurrentCanton().getId()>=0)&&(train.getCurrentCanton().getId()<100)){
-					//if(train.getTriomagique1()==true) {
-//						g2.drawString("Passengers = "+train.getCurrentPassagengers(), START_X + train.getPosition()-30, START_Y -30);
-					//}
 					i=i+1;
-					//40=largeur 30=taille y=position sur la rail
+					// The train is on an incident
 					if (train.isStop()) {
 						g2.setFont(new Font("Dialog", Font.BOLD, 12));
 						g2.setColor(Color.RED);
@@ -188,6 +199,7 @@ public class SimulationDashboard extends JPanel {
 						g2.drawString("Train : "+i, START_X + train.getPosition()-30, START_Y -90);
 						g2.drawString("Passengers: "+train.getCurrentPassagengers(), START_X + train.getPosition()-30, START_Y -110);
 						g2.drawImage(trainFailImage, START_X + train.getPosition()-30, START_Y,40,30, null);
+					// The train is waiting for the canton to be freed
 					} else if (train.getState() == State.WAITING) {
 						g2.setFont(new Font("Dialog", Font.BOLD, 12));
 						g2.setColor(Color.ORANGE);
@@ -195,7 +207,7 @@ public class SimulationDashboard extends JPanel {
 						g2.drawString("Train : "+i, START_X + train.getPosition()-30, START_Y -10);
 						g2.drawString("Passengers: "+train.getCurrentPassagengers(), START_X + train.getPosition()-30, START_Y -30);
 						g2.drawImage(trainWaitImage, START_X + train.getPosition()-30, START_Y,40,30, null);
-						
+					// The train is running like a bird (wait...)
 					} else {
 						g2.setFont(new Font("Dialog", Font.BOLD, 12));
 						g2.setColor(Color.BLUE);
@@ -211,18 +223,6 @@ public class SimulationDashboard extends JPanel {
 		} 
 	}
 
-	/*private void printPassengers(Graphics2D g2) {
-		int passengerStartX = START_X;
-		int passengerStartY = START_Y +20;
-		for (int index = 0; index < passengers.size(); index++) {
-			if (index % 5 == 0) {
-				passengerStartX += 150;
-				passengerStartY = START_Y + 50;
-			}
-			passengerStartX += 10;
-			g2.drawImage(passengerImage, passengerStartX, passengerStartY, null);
-		}
-	}*/
 	private void getImages() throws IOException {
 		stationImage = ImageIO.read(new File("./img/entrotrain_station.png"));
 		
@@ -230,7 +230,8 @@ public class SimulationDashboard extends JPanel {
 		trainWaitImage = ImageIO.read(new File("./img/entrotrain_train_wait.png"));
 		trainFailImage = ImageIO.read(new File("./img/entrotrain_train_fail.png"));
 		
-		passengerImage = ImageIO.read(new File("./img/entrotrain_passenger.png"));
+		passengerUpImage = ImageIO.read(new File("./img/entrotrain_passenger_up.png"));
+		passengerDownImage = ImageIO.read(new File("./img/entrotrain_passenger_done.png"));
 
 		railImage = ImageIO.read(new File("./img/rail.png"));
 		railBrokeImage = ImageIO.read(new File("./img/rail_broke.png"));

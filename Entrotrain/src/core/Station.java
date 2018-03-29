@@ -1,6 +1,7 @@
 package core;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Random;
 
 import core.Train;
@@ -111,7 +112,7 @@ public class Station {
 		int age = 7 + rand.nextInt(99-7);
 		
 		int idStationArrival = (idDeparture)+rand.nextInt(idTerminus-idDeparture+1);
-		System.out.println(idStationArrival);
+//		System.out.println(idStationArrival);
 		ArrayList<String> sexs = new ArrayList<String>();
 		sexs.add("m");
 		sexs.add("s");
