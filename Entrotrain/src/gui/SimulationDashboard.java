@@ -49,7 +49,7 @@ public class SimulationDashboard extends JPanel {
 		//recupere les Station fu fichier ainsi que l'enssemble des cantons
 		line = lineBuilder.getBuiltLine();
 		for(int i=0; i<line.getStations().size();i++) {
-			passengers = line.getStations().get(i).generatePassengers(50, line.getStations().get(i).getIdStation(),16);
+			passengers = line.getStations().get(i).generatePassengers(50, line.getStations().get(i).getIdStation(), 33);
 			line.getStations().get(i).setPassengers(passengers);
 		}
 
@@ -78,7 +78,7 @@ public class SimulationDashboard extends JPanel {
 		printTrains(g2);
 		
 		//printStation(g2);
-		printPassengers(g2);
+		//printPassengers(g2);
 	}
 	
 	
@@ -149,7 +149,7 @@ public class SimulationDashboard extends JPanel {
 				if(cpt==1 && station.getCantonid()<100 && station.getCantonid()>=0){
 					g2.drawString("" + station.getId(), station.getPosition()+25, START_Y +45-100*station.getLinelevel());
 					g2.drawImage(stationImage, START_X + station.getPosition()-10, START_Y +18-100*station.getLinelevel()-20, 32,32, null);
-					g2.drawString("Passenger station = " + station.getPassenger(), station.getPosition()+25, START_Y +70-100*station.getLinelevel());
+					g2.drawString("Passenger station = " + station.getPassengers().size(), station.getPosition()+25, START_Y +70-100*station.getLinelevel());
 				}
 				/*else if(cpt==2 && station.getCantonid()<100 && station.getCantonid()>=0){
 					g2.drawString("" + station.getId(), station.getPosition()+25, START_Y +45-100*station.getLinelevel());
@@ -173,7 +173,7 @@ public class SimulationDashboard extends JPanel {
 			for (Train train : trains) {
 				if((train.getCurrentCanton().getId()>=0)&&(train.getCurrentCanton().getId()<100)){
 					g2.setFont(new Font("Dialog", Font.PLAIN, 10));
-					g2.drawString("Train n°"+i, START_X + train.getPosition()-30, START_Y -10);
+					g2.drawString("Train : "+i, START_X + train.getPosition()-30, START_Y -10);
 					//if(train.getTriomagique1()==true) {
 						g2.drawString("Passengers = "+train.getCurrentPassagengers(), START_X + train.getPosition()-30, START_Y -30);
 					//}
@@ -186,21 +186,7 @@ public class SimulationDashboard extends JPanel {
 			System.out.println("");
 		} 
 	}
-	
-	private void printPassengers(Graphics2D g2) {
-		int passengerStartX = START_X;
-		int passengerStartY = START_Y + 30;
-		
-		for (int index = 0; index < passengers.size(); index++) {
-			if (index % 5 == 0) {
-				passengerStartX = START_X;
-				passengerStartY += 50;
-			}
-			passengerStartX += 10;
-			g2.drawImage(passengerImage, passengerStartX, passengerStartY, null);
-		}
-	}
-	
+
 	/*private void printPassengers(Graphics2D g2) {
 		int passengerStartX = START_X;
 		int passengerStartY = START_Y +20;

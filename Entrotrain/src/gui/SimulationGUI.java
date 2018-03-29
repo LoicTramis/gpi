@@ -29,7 +29,7 @@ public class SimulationGUI extends JFrame implements Runnable {
 	private static final int TRAIN_SPEED_VARIATION = 3;
 	private static final int TRAIN_BASIC_SPEED = 5;
 	private static final int SIMULATION_DURATION = 10000;
-	private static final int MAX_PASSENGER = 5;
+	private static final int MAX_PASSENGER = 10000;
 	private int currentTime = 0;
 	private boolean triomagique=false;
 	private SimulationDashboard dashboard; //JPanel
@@ -50,7 +50,7 @@ public class SimulationGUI extends JFrame implements Runnable {
 		setLayout(new BorderLayout());
 		//getContentPane().add(dashboard, BorderLayout.CENTER);
 		getContentPane().add(panel3boutton, BorderLayout.SOUTH);
-		final JButton button = new JButton("STOP");
+		JButton button = new JButton("STOP");
 		button.setFocusable(false);
 		ActionListener machin = new ActionListener() {
 	    	public void actionPerformed(ActionEvent e) {
@@ -81,9 +81,10 @@ public class SimulationGUI extends JFrame implements Runnable {
 		 *
 		 */
 		//Boutton faster
-	    final JButton speedIncrease=new JButton("FASTER");
+	    JButton speedIncrease=new JButton("FASTER");
 	    speedIncrease.setFocusable(false);
 	    speedIncrease.addActionListener(new ActionListener(){
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				speedIncrease.setFocusable(true);
 				if(TIME_UNIT > 5)
@@ -96,9 +97,10 @@ public class SimulationGUI extends JFrame implements Runnable {
 		 *
 		 */
 	    //Boutton slower
-	    final JButton speedDecrease=new JButton("SLOWER");
+	    JButton speedDecrease=new JButton("SLOWER");
 	    speedDecrease.setFocusable(false);
 	    speedDecrease.addActionListener(new ActionListener(){
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				speedDecrease.setFocusable(true);
 				TIME_UNIT+=50;
@@ -200,8 +202,8 @@ public class SimulationGUI extends JFrame implements Runnable {
 	}
 
 	public void refill_stations(List<Station> stations) {
-		for(int i=0;i<stations.size()-1;i++) {
-			stations.get(i).generateMorePassengers(5*(stations.get(i).getPopularity()),stations.get(i).getIdStation(),16);
+		for(int i=0;i<stations.size();i++) {
+			stations.get(i).generateMorePassengers(5*(stations.get(i).getPopularity()),stations.get(i).getIdStation(),33);
 		}
 		
 	}
