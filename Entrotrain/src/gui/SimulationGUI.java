@@ -68,7 +68,6 @@ public class SimulationGUI extends JFrame implements Runnable {
 		animationButton.setForeground(Color.WHITE);
 		// show the simulation
 		animationButton.addActionListener(new ActionListener() {
-			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				dashboard.setVisible(true);
 				panel3boutton.setVisible(true);
@@ -85,7 +84,6 @@ public class SimulationGUI extends JFrame implements Runnable {
 		statisticButton.setForeground(Color.WHITE);
 		// show the statistics
 		statisticButton.addActionListener(new ActionListener() {
-			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				dashboard.setVisible(false);
 				panel3boutton.setVisible(false);
@@ -99,9 +97,9 @@ public class SimulationGUI extends JFrame implements Runnable {
 		 * @author Karim
 		 *
 		 */
-		JButton stopButton = new JButton("STOP");
-		JButton fastButton = new JButton("FAST");// Boutton faster
-		JButton slowButton = new JButton("SLOW");// Boutton slower
+		final JButton stopButton = new JButton("STOP");
+		final JButton fastButton = new JButton("FAST");// Boutton faster
+		final JButton slowButton = new JButton("SLOW");// Boutton slower
 		
 		stopButton.setFocusable(false);
 		stopButton.setAlignmentX(0);
@@ -148,7 +146,6 @@ public class SimulationGUI extends JFrame implements Runnable {
 	    fastButton.setBorder(new RoundedBorder(10)); //10 is the radius
 	    
 	    fastButton.addActionListener(new ActionListener(){
-			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				fastButton.setFocusable(true);
 				if(TIME_UNIT > 5)
@@ -164,7 +161,6 @@ public class SimulationGUI extends JFrame implements Runnable {
 	    slowButton.setBorder(new RoundedBorder(10)); //10 is the radius
 	    
 	    slowButton.addActionListener(new ActionListener(){
-			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				slowButton.setFocusable(true);
 				TIME_UNIT = 100;
@@ -266,7 +262,7 @@ public class SimulationGUI extends JFrame implements Runnable {
 
 	public void refill_stations(List<Station> stations) {
 		for(int i=0;i<stations.size();i++) {
-			stations.get(i).generateMorePassengers(5*(stations.get(i).getPopularity()),stations.get(i).getIdStation(),33);
+			stations.get(i).generateMorePassengers(5*(stations.get(i).getPopularity()),stations.get(i).getIdStation(),17);
 		}
 		
 	}

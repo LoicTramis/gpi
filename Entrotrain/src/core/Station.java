@@ -18,7 +18,16 @@ public class Station {
 	private int position;
 	private int idStation;
 	private ArrayList<Passenger> passengers =new ArrayList<Passenger>();
+	private ArrayList<Passenger> passengersdescending =new ArrayList<Passenger>();
 	
+	public ArrayList<Passenger> getPassengersdescending() {
+		return passengersdescending;
+	}
+
+	public void setPassengersdescending(ArrayList<Passenger> passengersdescending) {
+		this.passengersdescending = passengersdescending;
+	}
+
 	/**
 	 * @author Karim
 	 *
