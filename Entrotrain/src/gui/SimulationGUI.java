@@ -9,6 +9,7 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.swing.JButton;
@@ -22,6 +23,7 @@ import core.Line;
 import core.Station;
 import core.Train;
 import statistique.StatistiqueCore;
+import statistique.Statistiques;
 
 /**
  * @author Karim
@@ -36,8 +38,11 @@ public class SimulationGUI extends JFrame implements Runnable {
 	private boolean triomagique=false;
 	private SimulationDashboard dashboard; //JPanel
 	private StatistiqueCore statistic;
+	private Statistiques stat;
 	private JPanel panelTab= new JPanel();
+	private JPanel statJP = new JPanel();
 	private JPanel panel3boutton= new JPanel();
+	private HashMap<String , Integer> statHasmap;
 	//private JTextField textFieldStation = new JTextField("", 20);
 	//private JTextField textFieldTrain = new JTextField("", 20);
 	private boolean stop ;
@@ -50,9 +55,15 @@ public class SimulationGUI extends JFrame implements Runnable {
 		super("EntroTrain");
 		dashboard = new SimulationDashboard();
 		statistic = new StatistiqueCore("EntroStats"); // je sais pas mtn
+		stat = new Statistiques();
+		statHasmap = stat.stationStat(dashboard.getArrayStation(dashboard.getStations()));
+		statJP = statistic.barChart3D(statHasmap,"Gare","Gare","Satisfaction");
+		
+		
 		setLayout(new BorderLayout());
 		getContentPane().add(panelTab, BorderLayout.NORTH);
 		getContentPane().add(panel3boutton, BorderLayout.SOUTH);
+		getContentPane().add(statJP,BorderLayout.CENTER);
 		/**
 		 * @author Loic
 		 */
@@ -87,7 +98,6 @@ public class SimulationGUI extends JFrame implements Runnable {
 			public void actionPerformed(ActionEvent arg0) {
 				dashboard.setVisible(false);
 				panel3boutton.setVisible(false);
-				
 			}
 		});
 		

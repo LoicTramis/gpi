@@ -11,7 +11,9 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.Thread.State;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.ConcurrentModificationException;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.imageio.ImageIO;
@@ -43,6 +45,7 @@ public class SimulationDashboard extends JPanel {
 
 	ArrayList<Train> alltrains = new ArrayList<Train>();
 	private List<Station> stations = new ArrayList<Station>();
+
 	private LineBuilder lineBuilder;
 	private int cpt=1;
 	//private Station station1;
@@ -252,5 +255,22 @@ public class SimulationDashboard extends JPanel {
 
 	public void setTrains(List<Train> trains) {
 		this.trains = trains;
+	}
+	public List<Station> getStations() {
+		return stations;
+	}
+	
+	public ArrayList<Station> getArrayStation(List<Station> stations){
+		ArrayList<Station> stationsArray = new ArrayList<Station>();
+	    Iterator<Station> itrTemp = stations.iterator();
+	    while(itrTemp.hasNext()){
+	        Station stationTemp = itrTemp.next();
+	        stationsArray.add(stationTemp);   
+	    }
+	    return stationsArray;	
+	}
+
+	public void setStations(List<Station> stations) {
+		this.stations = stations;
 	}
 }

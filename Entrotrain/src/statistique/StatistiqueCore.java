@@ -54,19 +54,20 @@ public class StatistiqueCore {
 	 * @param stat
 	 * @return
 	 */
-	public JPanel barChart3D(ArrayList<String> abscissa , ArrayList<Integer> abscissaVal, String columsName , String xName , String yName ) {
+	public JPanel barChart3D( HashMap<String,Integer> stat , String columsName , String xName , String yName ) {
 		
 		DefaultCategoryDataset dataset = new DefaultCategoryDataset( );
 		
-		for(int index = 0 ; index < abscissa.size() ; index++ ){
-			dataset.addValue(abscissaVal.get(index), abscissa.get(index), columsName);
+		for (Entry<String, Integer> e : stat.entrySet()){
+			   dataset.addValue(e.getValue(), e.getKey() ,e.getKey());
 		}
 		
 		JFreeChart barChart = ChartFactory.createBarChart3D(this.title,xName,yName,dataset,PlotOrientation.VERTICAL,false,true,false);
 		ChartPanel panel = new ChartPanel(barChart);
 		
 		return panel;
-	}			
+	}
+	
 	
 
 	
