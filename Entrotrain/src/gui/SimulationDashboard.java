@@ -53,7 +53,7 @@ public class SimulationDashboard extends JPanel {
 		//recupere les Station fu fichier ainsi que l'enssemble des cantons
 		line = lineBuilder.getBuiltLine();
 		for(int i=0; i<line.getStations().size();i++) {
-			passengers = line.getStations().get(i).generatePassengers(50, line.getStations().get(i).getIdStation(), 17);
+			passengers = line.getStations().get(i).generatePassengers(50, line.getStations().get(i).getIdStation(), 16);
 			line.getStations().get(i).setPassengers(passengers);
 		}
 
@@ -152,13 +152,14 @@ public class SimulationDashboard extends JPanel {
 				}*/
 				if(cpt==1 && station.getCantonid()<100 && station.getCantonid() >= 0){
 					int number = 0;
+					/**
 					for (Passenger passenger : passengers) {
 						if (passenger.getUnboard()) {
 							number++;
 							System.out.println("Un passager est descendu");
 						}
 					}
-					
+					**/
 					// the station
 					g2.drawString("" + station.getId(), station.getPosition()+25, START_Y +45-100*station.getLinelevel());
 					g2.drawImage(stationImage, START_X + station.getPosition()-10, START_Y +2-100*station.getLinelevel()-20, null);

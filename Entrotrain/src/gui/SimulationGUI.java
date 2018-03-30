@@ -262,7 +262,7 @@ public class SimulationGUI extends JFrame implements Runnable {
 
 	public void refill_stations(List<Station> stations) {
 		for(int i=0;i<stations.size();i++) {
-			stations.get(i).generateMorePassengers(5*(stations.get(i).getPopularity()),stations.get(i).getIdStation(),17);
+			stations.get(i).generateMorePassengers(5*(stations.get(i).getPopularity()),stations.get(i).getIdStation(),16);
 		}
 		
 	}
